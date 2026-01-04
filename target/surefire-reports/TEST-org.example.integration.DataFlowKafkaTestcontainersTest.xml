@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="org.example.integration.DataFlowKafkaTestcontainersTest" time="18.208" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/krunal/REPO/DataLakePOC/target/test-classes:/Users/krunal/REPO/DataLakePOC/target/classes:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.4.0/spring-boot-starter-web-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter/3.4.0/spring-boot-starter-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot/3.4.0/spring-boot-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.4.0/spring-boot-starter-logging-3.4.0.jar:/Users/krunal/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.24.1/log4j-to-slf4j-2.24.1.jar:/Users/krunal/.m2/repository/org/apache/logging/log4j/log4j-api/2.24.1/log4j-api-2.24.1.jar:/Users/krunal/.m2/repository/org/slf4j/jul-to-slf4j/2.0.16/jul-to-slf4j-2.0.16.jar:/Users/krunal/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar:/Users/krunal/.m2/repository/org/yaml/snakeyaml/2.3/snakeyaml-2.3.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.4.0/spring-boot-starter-json-3.4.0.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.18.1/jackson-datatype-jdk8-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.18.1/jackson-datatype-jsr310-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.18.1/jackson-module-parameter-names-2.18.1.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.4.0/spring-boot-starter-tomcat-3.4.0.jar:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.33/tomcat-embed-core-10.1.33.jar:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.1.33/tomcat-embed-el-10.1.33.jar:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.33/tomcat-embed-websocket-10.1.33.jar:/Users/krunal/.m2/repository/org/springframework/spring-web/6.2.0/spring-web-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-beans/6.2.0/spring-beans-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-webmvc/6.2.0/spring-webmvc-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-aop/6.2.0/spring-aop-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-expression/6.2.0/spring-expression-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-data-redis/3.4.0/spring-boot-starter-data-redis-3.4.0.jar:/Users/krunal/.m2/repository/io/lettuce/lettuce-core/6.4.1.RELEASE/lettuce-core-6.4.1.RELEASE.jar:/Users/krunal/.m2/repository/io/netty/netty-common/4.1.115.Final/netty-common-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-handler/4.1.115.Final/netty-handler-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-resolver/4.1.115.Final/netty-resolver-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-buffer/4.1.115.Final/netty-buffer-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-transport-native-unix-common/4.1.115.Final/netty-transport-native-unix-common-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-codec/4.1.115.Final/netty-codec-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-transport/4.1.115.Final/netty-transport-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/projectreactor/reactor-core/3.7.0/reactor-core-3.7.0.jar:/Users/krunal/.m2/repository/org/reactivestreams/reactive-streams/1.0.4/reactive-streams-1.0.4.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-redis/3.4.0/spring-data-redis-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-keyvalue/3.4.0/spring-data-keyvalue-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-oxm/6.2.0/spring-oxm-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-context-support/6.2.0/spring-context-support-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-data-jpa/3.4.0/spring-boot-starter-data-jpa-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-jdbc/3.4.0/spring-boot-starter-jdbc-3.4.0.jar:/Users/krunal/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-jdbc/6.2.0/spring-jdbc-6.2.0.jar:/Users/krunal/.m2/repository/org/hibernate/orm/hibernate-core/6.6.2.Final/hibernate-core-6.6.2.Final.jar:/Users/krunal/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar:/Users/krunal/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/Users/krunal/.m2/repository/org/jboss/logging/jboss-logging/3.6.1.Final/jboss-logging-3.6.1.Final.jar:/Users/krunal/.m2/repository/org/hibernate/common/hibernate-commons-annotations/7.0.3.Final/hibernate-commons-annotations-7.0.3.Final.jar:/Users/krunal/.m2/repository/io/smallrye/jandex/3.2.0/jandex-3.2.0.jar:/Users/krunal/.m2/repository/com/fasterxml/classmate/1.7.0/classmate-1.7.0.jar:/Users/krunal/.m2/repository/net/bytebuddy/byte-buddy/1.15.10/byte-buddy-1.15.10.jar:/Users/krunal/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.5/jaxb-runtime-4.0.5.jar:/Users/krunal/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.5/jaxb-core-4.0.5.jar:/Users/krunal/.m2/repository/org/eclipse/angus/angus-activation/2.0.2/angus-activation-2.0.2.jar:/Users/krunal/.m2/repository/org/glassfish/jaxb/txw2/4.0.5/txw2-4.0.5.jar:/Users/krunal/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.2/istack-commons-runtime-4.1.2.jar:/Users/krunal/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/Users/krunal/.m2/repository/org/antlr/antlr4-runtime/4.13.0/antlr4-runtime-4.13.0.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-jpa/3.4.0/spring-data-jpa-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-commons/3.4.0/spring-data-commons-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-orm/6.2.0/spring-orm-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-aspects/6.2.0/spring-aspects-6.2.0.jar:/Users/krunal/.m2/repository/org/aspectj/aspectjweaver/1.9.22.1/aspectjweaver-1.9.22.1.jar:/Users/krunal/.m2/repository/com/h2database/h2/2.3.232/h2-2.3.232.jar:/Users/krunal/.m2/repository/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-jdbc/0.7.1/clickhouse-jdbc-0.7.1.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-client/0.7.1/clickhouse-client-0.7.1.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-data/0.7.1/clickhouse-data-0.7.1.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-http-client/0.7.1/clickhouse-http-client-0.7.1.jar:/Users/krunal/.m2/repository/org/apache/httpcomponents/client5/httpclient5/5.4.1/httpclient5-5.4.1.jar:/Users/krunal/.m2/repository/org/apache/httpcomponents/core5/httpcore5-h2/5.3.1/httpcore5-h2-5.3.1.jar:/Users/krunal/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/Users/krunal/.m2/repository/org/apache/httpcomponents/core5/httpcore5/5.3.1/httpcore5-5.3.1.jar:/Users/krunal/.m2/repository/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/Users/krunal/.m2/repository/io/minio/minio/8.5.9/minio-8.5.9.jar:/Users/krunal/.m2/repository/com/carrotsearch/thirdparty/simple-xml-safe/2.7.1/simple-xml-safe-2.7.1.jar:/Users/krunal/.m2/repository/com/google/guava/guava/33.3.1-jre/guava-33.3.1-jre.jar:/Users/krunal/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/krunal/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/krunal/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/krunal/.m2/repository/org/checkerframework/checker-qual/3.43.0/checker-qual-3.43.0.jar:/Users/krunal/.m2/repository/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0.jar:/Users/krunal/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/Users/krunal/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/Users/krunal/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/Users/krunal/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.25/kotlin-stdlib-common-1.9.25.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.25/kotlin-stdlib-jdk8-1.9.25.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.25/kotlin-stdlib-1.9.25.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.25/kotlin-stdlib-jdk7-1.9.25.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.1/jackson-annotations-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.1/jackson-core-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.1/jackson-databind-2.18.1.jar:/Users/krunal/.m2/repository/org/bouncycastle/bcprov-jdk18on/1.77/bcprov-jdk18on-1.77.jar:/Users/krunal/.m2/repository/org/apache/commons/commons-compress/1.26.0/commons-compress-1.26.0.jar:/Users/krunal/.m2/repository/commons-io/commons-io/2.15.1/commons-io-2.15.1.jar:/Users/krunal/.m2/repository/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.jar:/Users/krunal/.m2/repository/commons-codec/commons-codec/1.17.1/commons-codec-1.17.1.jar:/Users/krunal/.m2/repository/org/xerial/snappy/snappy-java/1.1.10.5/snappy-java-1.1.10.5.jar:/Users/krunal/.m2/repository/org/springframework/kafka/spring-kafka/3.3.0/spring-kafka-3.3.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-context/6.2.0/spring-context-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-messaging/6.2.0/spring-messaging-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-tx/6.2.0/spring-tx-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/retry/spring-retry/2.0.10/spring-retry-2.0.10.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1.jar:/Users/krunal/.m2/repository/com/github/luben/zstd-jni/1.5.6-4/zstd-jni-1.5.6-4.jar:/Users/krunal/.m2/repository/io/micrometer/micrometer-observation/1.14.1/micrometer-observation-1.14.1.jar:/Users/krunal/.m2/repository/io/micrometer/micrometer-commons/1.14.1/micrometer-commons-1.14.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.18.1/jackson-dataformat-csv-2.18.1.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-test/3.4.0/spring-boot-starter-test-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-test/3.4.0/spring-boot-test-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/3.4.0/spring-boot-test-autoconfigure-3.4.0.jar:/Users/krunal/.m2/repository/com/jayway/jsonpath/json-path/2.9.0/json-path-2.9.0.jar:/Users/krunal/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.2/jakarta.xml.bind-api-4.0.2.jar:/Users/krunal/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.3/jakarta.activation-api-2.1.3.jar:/Users/krunal/.m2/repository/net/minidev/json-smart/2.5.1/json-smart-2.5.1.jar:/Users/krunal/.m2/repository/net/minidev/accessors-smart/2.5.1/accessors-smart-2.5.1.jar:/Users/krunal/.m2/repository/org/ow2/asm/asm/9.6/asm-9.6.jar:/Users/krunal/.m2/repository/org/assertj/assertj-core/3.26.3/assertj-core-3.26.3.jar:/Users/krunal/.m2/repository/org/awaitility/awaitility/4.2.2/awaitility-4.2.2.jar:/Users/krunal/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.3/junit-jupiter-5.11.3.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.3/junit-jupiter-params-5.11.3.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.3/junit-jupiter-engine-5.11.3.jar:/Users/krunal/.m2/repository/org/mockito/mockito-core/5.14.2/mockito-core-5.14.2.jar:/Users/krunal/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.10/byte-buddy-agent-1.15.10.jar:/Users/krunal/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/Users/krunal/.m2/repository/org/mockito/mockito-junit-jupiter/5.14.2/mockito-junit-jupiter-5.14.2.jar:/Users/krunal/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/Users/krunal/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:/Users/krunal/.m2/repository/org/springframework/spring-core/6.2.0/spring-core-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-jcl/6.2.0/spring-jcl-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-test/6.2.0/spring-test-6.2.0.jar:/Users/krunal/.m2/repository/org/xmlunit/xmlunit-core/2.10.0/xmlunit-core-2.10.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-testcontainers/3.4.0/spring-boot-testcontainers-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.4.0/spring-boot-autoconfigure-3.4.0.jar:/Users/krunal/.m2/repository/org/testcontainers/testcontainers/1.21.4/testcontainers-1.21.4.jar:/Users/krunal/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/Users/krunal/.m2/repository/org/hamcrest/hamcrest-core/2.2/hamcrest-core-2.2.jar:/Users/krunal/.m2/repository/org/rnorth/duct-tape/duct-tape/1.0.8/duct-tape-1.0.8.jar:/Users/krunal/.m2/repository/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar:/Users/krunal/.m2/repository/com/github/docker-java/docker-java-api/3.4.2/docker-java-api-3.4.2.jar:/Users/krunal/.m2/repository/com/github/docker-java/docker-java-transport-zerodep/3.4.2/docker-java-transport-zerodep-3.4.2.jar:/Users/krunal/.m2/repository/com/github/docker-java/docker-java-transport/3.4.2/docker-java-transport-3.4.2.jar:/Users/krunal/.m2/repository/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar:/Users/krunal/.m2/repository/org/springframework/kafka/spring-kafka-test/3.3.0/spring-kafka-test-3.3.0.jar:/Users/krunal/.m2/repository/org/apache/zookeeper/zookeeper/3.8.4/zookeeper-3.8.4.jar:/Users/krunal/.m2/repository/org/apache/zookeeper/zookeeper-jute/3.8.4/zookeeper-jute-3.8.4.jar:/Users/krunal/.m2/repository/org/apache/yetus/audience-annotations/0.12.0/audience-annotations-0.12.0.jar:/Users/krunal/.m2/repository/io/netty/netty-transport-native-epoll/4.1.115.Final/netty-transport-native-epoll-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-transport-classes-epoll/4.1.115.Final/netty-transport-classes-epoll-4.1.115.Final.jar:/Users/krunal/.m2/repository/ch/qos/logback/logback-core/1.5.12/logback-core-1.5.12.jar:/Users/krunal/.m2/repository/ch/qos/logback/logback-classic/1.5.12/logback-classic-1.5.12.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-metadata/3.8.1/kafka-metadata-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-raft/3.8.1/kafka-raft-3.8.1.jar:/Users/krunal/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1.jar:/Users/krunal/.m2/repository/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/Users/krunal/.m2/repository/org/pcollections/pcollections/4.0.1/pcollections-4.0.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-streams-test-utils/3.8.1/kafka-streams-test-utils-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-streams/3.8.1/kafka-streams-3.8.1.jar:/Users/krunal/.m2/repository/org/rocksdb/rocksdbjni/7.9.2/rocksdbjni-7.9.2.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1.jar:/Users/krunal/.m2/repository/org/scala-lang/scala-library/2.13.14/scala-library-2.13.14.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-group-coordinator-api/3.8.1/kafka-group-coordinator-api-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-group-coordinator/3.8.1/kafka-group-coordinator-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-transaction-coordinator/3.8.1/kafka-transaction-coordinator-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-storage-api/3.8.1/kafka-storage-api-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-tools-api/3.8.1/kafka-tools-api-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-storage/3.8.1/kafka-storage-3.8.1.jar:/Users/krunal/.m2/repository/com/github/ben-manes/caffeine/caffeine/3.1.8/caffeine-3.1.8.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server/3.8.1/kafka-server-3.8.1.jar:/Users/krunal/.m2/repository/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar:/Users/krunal/.m2/repository/commons-validator/commons-validator/1.7/commons-validator-1.7.jar:/Users/krunal/.m2/repository/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar:/Users/krunal/.m2/repository/commons-digester/commons-digester/2.1/commons-digester-2.1.jar:/Users/krunal/.m2/repository/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/module/jackson-module-scala_2.13/2.18.1/jackson-module-scala_2.13-2.18.1.jar:/Users/krunal/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/Users/krunal/.m2/repository/org/bitbucket/b_c/jose4j/0.9.4/jose4j-0.9.4.jar:/Users/krunal/.m2/repository/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar:/Users/krunal/.m2/repository/org/scala-lang/modules/scala-java8-compat_2.13/1.0.2/scala-java8-compat_2.13-1.0.2.jar:/Users/krunal/.m2/repository/org/scala-lang/scala-reflect/2.13.14/scala-reflect-2.13.14.jar:/Users/krunal/.m2/repository/com/typesafe/scala-logging/scala-logging_2.13/3.9.4/scala-logging_2.13-3.9.4.jar:/Users/krunal/.m2/repository/io/dropwizard/metrics/metrics-core/4.1.12.1/metrics-core-4.1.12.1.jar:/Users/krunal/.m2/repository/commons-cli/commons-cli/1.4/commons-cli-1.4.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.3/junit-jupiter-api-5.11.3.jar:/Users/krunal/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/krunal/.m2/repository/org/junit/platform/junit-platform-commons/1.11.3/junit-platform-commons-1.11.3.jar:/Users/krunal/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/krunal/.m2/repository/org/junit/platform/junit-platform-launcher/1.11.3/junit-platform-launcher-1.11.3.jar:/Users/krunal/.m2/repository/org/junit/platform/junit-platform-engine/1.11.3/junit-platform-engine-1.11.3.jar:/Users/krunal/.m2/repository/org/testcontainers/junit-jupiter/1.21.4/junit-jupiter-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/clickhouse/1.21.4/clickhouse-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/jdbc/1.21.4/jdbc-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/database-commons/1.21.4/database-commons-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/minio/1.21.4/minio-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/kafka/1.21.4/kafka-1.21.4.jar:"/>
+    <property name="java.vm.vendor" value="Amazon.com Inc."/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="catalina.useNaming" value="false"/>
+    <property name="java.vendor.url" value="https://aws.amazon.com/corretto/"/>
+    <property name="user.timezone" value="Asia/Kolkata"/>
+    <property name="org.jboss.logging.provider" value="slf4j"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="APPLICATION_NAME" value="DataLakePOC"/>
+    <property name="user.country" value="GB"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/Users/krunal/Library/Java/JavaVirtualMachines/corretto-21.0.7/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/krunal/REPO/DataLakePOC/target/surefire/surefirebooter-20260104183248433_3.jar /Users/krunal/REPO/DataLakePOC/target/surefire 2026-01-04T18-32-48_353-jvmRun1 surefire-20260104183248433_1tmp surefire_0-20260104183248433_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/krunal/REPO/DataLakePOC/target/test-classes:/Users/krunal/REPO/DataLakePOC/target/classes:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.4.0/spring-boot-starter-web-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter/3.4.0/spring-boot-starter-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot/3.4.0/spring-boot-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.4.0/spring-boot-starter-logging-3.4.0.jar:/Users/krunal/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.24.1/log4j-to-slf4j-2.24.1.jar:/Users/krunal/.m2/repository/org/apache/logging/log4j/log4j-api/2.24.1/log4j-api-2.24.1.jar:/Users/krunal/.m2/repository/org/slf4j/jul-to-slf4j/2.0.16/jul-to-slf4j-2.0.16.jar:/Users/krunal/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar:/Users/krunal/.m2/repository/org/yaml/snakeyaml/2.3/snakeyaml-2.3.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.4.0/spring-boot-starter-json-3.4.0.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.18.1/jackson-datatype-jdk8-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.18.1/jackson-datatype-jsr310-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.18.1/jackson-module-parameter-names-2.18.1.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.4.0/spring-boot-starter-tomcat-3.4.0.jar:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.33/tomcat-embed-core-10.1.33.jar:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.1.33/tomcat-embed-el-10.1.33.jar:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.33/tomcat-embed-websocket-10.1.33.jar:/Users/krunal/.m2/repository/org/springframework/spring-web/6.2.0/spring-web-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-beans/6.2.0/spring-beans-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-webmvc/6.2.0/spring-webmvc-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-aop/6.2.0/spring-aop-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-expression/6.2.0/spring-expression-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-data-redis/3.4.0/spring-boot-starter-data-redis-3.4.0.jar:/Users/krunal/.m2/repository/io/lettuce/lettuce-core/6.4.1.RELEASE/lettuce-core-6.4.1.RELEASE.jar:/Users/krunal/.m2/repository/io/netty/netty-common/4.1.115.Final/netty-common-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-handler/4.1.115.Final/netty-handler-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-resolver/4.1.115.Final/netty-resolver-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-buffer/4.1.115.Final/netty-buffer-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-transport-native-unix-common/4.1.115.Final/netty-transport-native-unix-common-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-codec/4.1.115.Final/netty-codec-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-transport/4.1.115.Final/netty-transport-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/projectreactor/reactor-core/3.7.0/reactor-core-3.7.0.jar:/Users/krunal/.m2/repository/org/reactivestreams/reactive-streams/1.0.4/reactive-streams-1.0.4.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-redis/3.4.0/spring-data-redis-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-keyvalue/3.4.0/spring-data-keyvalue-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-oxm/6.2.0/spring-oxm-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-context-support/6.2.0/spring-context-support-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-data-jpa/3.4.0/spring-boot-starter-data-jpa-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-jdbc/3.4.0/spring-boot-starter-jdbc-3.4.0.jar:/Users/krunal/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-jdbc/6.2.0/spring-jdbc-6.2.0.jar:/Users/krunal/.m2/repository/org/hibernate/orm/hibernate-core/6.6.2.Final/hibernate-core-6.6.2.Final.jar:/Users/krunal/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar:/Users/krunal/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/Users/krunal/.m2/repository/org/jboss/logging/jboss-logging/3.6.1.Final/jboss-logging-3.6.1.Final.jar:/Users/krunal/.m2/repository/org/hibernate/common/hibernate-commons-annotations/7.0.3.Final/hibernate-commons-annotations-7.0.3.Final.jar:/Users/krunal/.m2/repository/io/smallrye/jandex/3.2.0/jandex-3.2.0.jar:/Users/krunal/.m2/repository/com/fasterxml/classmate/1.7.0/classmate-1.7.0.jar:/Users/krunal/.m2/repository/net/bytebuddy/byte-buddy/1.15.10/byte-buddy-1.15.10.jar:/Users/krunal/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.5/jaxb-runtime-4.0.5.jar:/Users/krunal/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.5/jaxb-core-4.0.5.jar:/Users/krunal/.m2/repository/org/eclipse/angus/angus-activation/2.0.2/angus-activation-2.0.2.jar:/Users/krunal/.m2/repository/org/glassfish/jaxb/txw2/4.0.5/txw2-4.0.5.jar:/Users/krunal/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.2/istack-commons-runtime-4.1.2.jar:/Users/krunal/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/Users/krunal/.m2/repository/org/antlr/antlr4-runtime/4.13.0/antlr4-runtime-4.13.0.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-jpa/3.4.0/spring-data-jpa-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/data/spring-data-commons/3.4.0/spring-data-commons-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-orm/6.2.0/spring-orm-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-aspects/6.2.0/spring-aspects-6.2.0.jar:/Users/krunal/.m2/repository/org/aspectj/aspectjweaver/1.9.22.1/aspectjweaver-1.9.22.1.jar:/Users/krunal/.m2/repository/com/h2database/h2/2.3.232/h2-2.3.232.jar:/Users/krunal/.m2/repository/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-jdbc/0.7.1/clickhouse-jdbc-0.7.1.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-client/0.7.1/clickhouse-client-0.7.1.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-data/0.7.1/clickhouse-data-0.7.1.jar:/Users/krunal/.m2/repository/com/clickhouse/clickhouse-http-client/0.7.1/clickhouse-http-client-0.7.1.jar:/Users/krunal/.m2/repository/org/apache/httpcomponents/client5/httpclient5/5.4.1/httpclient5-5.4.1.jar:/Users/krunal/.m2/repository/org/apache/httpcomponents/core5/httpcore5-h2/5.3.1/httpcore5-h2-5.3.1.jar:/Users/krunal/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/Users/krunal/.m2/repository/org/apache/httpcomponents/core5/httpcore5/5.3.1/httpcore5-5.3.1.jar:/Users/krunal/.m2/repository/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/Users/krunal/.m2/repository/io/minio/minio/8.5.9/minio-8.5.9.jar:/Users/krunal/.m2/repository/com/carrotsearch/thirdparty/simple-xml-safe/2.7.1/simple-xml-safe-2.7.1.jar:/Users/krunal/.m2/repository/com/google/guava/guava/33.3.1-jre/guava-33.3.1-jre.jar:/Users/krunal/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/krunal/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/krunal/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/krunal/.m2/repository/org/checkerframework/checker-qual/3.43.0/checker-qual-3.43.0.jar:/Users/krunal/.m2/repository/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0.jar:/Users/krunal/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/Users/krunal/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/Users/krunal/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/Users/krunal/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.25/kotlin-stdlib-common-1.9.25.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.25/kotlin-stdlib-jdk8-1.9.25.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.25/kotlin-stdlib-1.9.25.jar:/Users/krunal/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.25/kotlin-stdlib-jdk7-1.9.25.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.1/jackson-annotations-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.1/jackson-core-2.18.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.1/jackson-databind-2.18.1.jar:/Users/krunal/.m2/repository/org/bouncycastle/bcprov-jdk18on/1.77/bcprov-jdk18on-1.77.jar:/Users/krunal/.m2/repository/org/apache/commons/commons-compress/1.26.0/commons-compress-1.26.0.jar:/Users/krunal/.m2/repository/commons-io/commons-io/2.15.1/commons-io-2.15.1.jar:/Users/krunal/.m2/repository/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.jar:/Users/krunal/.m2/repository/commons-codec/commons-codec/1.17.1/commons-codec-1.17.1.jar:/Users/krunal/.m2/repository/org/xerial/snappy/snappy-java/1.1.10.5/snappy-java-1.1.10.5.jar:/Users/krunal/.m2/repository/org/springframework/kafka/spring-kafka/3.3.0/spring-kafka-3.3.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-context/6.2.0/spring-context-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-messaging/6.2.0/spring-messaging-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-tx/6.2.0/spring-tx-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/retry/spring-retry/2.0.10/spring-retry-2.0.10.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1.jar:/Users/krunal/.m2/repository/com/github/luben/zstd-jni/1.5.6-4/zstd-jni-1.5.6-4.jar:/Users/krunal/.m2/repository/io/micrometer/micrometer-observation/1.14.1/micrometer-observation-1.14.1.jar:/Users/krunal/.m2/repository/io/micrometer/micrometer-commons/1.14.1/micrometer-commons-1.14.1.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.18.1/jackson-dataformat-csv-2.18.1.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-starter-test/3.4.0/spring-boot-starter-test-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-test/3.4.0/spring-boot-test-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/3.4.0/spring-boot-test-autoconfigure-3.4.0.jar:/Users/krunal/.m2/repository/com/jayway/jsonpath/json-path/2.9.0/json-path-2.9.0.jar:/Users/krunal/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.2/jakarta.xml.bind-api-4.0.2.jar:/Users/krunal/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.3/jakarta.activation-api-2.1.3.jar:/Users/krunal/.m2/repository/net/minidev/json-smart/2.5.1/json-smart-2.5.1.jar:/Users/krunal/.m2/repository/net/minidev/accessors-smart/2.5.1/accessors-smart-2.5.1.jar:/Users/krunal/.m2/repository/org/ow2/asm/asm/9.6/asm-9.6.jar:/Users/krunal/.m2/repository/org/assertj/assertj-core/3.26.3/assertj-core-3.26.3.jar:/Users/krunal/.m2/repository/org/awaitility/awaitility/4.2.2/awaitility-4.2.2.jar:/Users/krunal/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.3/junit-jupiter-5.11.3.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.3/junit-jupiter-params-5.11.3.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.3/junit-jupiter-engine-5.11.3.jar:/Users/krunal/.m2/repository/org/mockito/mockito-core/5.14.2/mockito-core-5.14.2.jar:/Users/krunal/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.10/byte-buddy-agent-1.15.10.jar:/Users/krunal/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/Users/krunal/.m2/repository/org/mockito/mockito-junit-jupiter/5.14.2/mockito-junit-jupiter-5.14.2.jar:/Users/krunal/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/Users/krunal/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:/Users/krunal/.m2/repository/org/springframework/spring-core/6.2.0/spring-core-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-jcl/6.2.0/spring-jcl-6.2.0.jar:/Users/krunal/.m2/repository/org/springframework/spring-test/6.2.0/spring-test-6.2.0.jar:/Users/krunal/.m2/repository/org/xmlunit/xmlunit-core/2.10.0/xmlunit-core-2.10.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-testcontainers/3.4.0/spring-boot-testcontainers-3.4.0.jar:/Users/krunal/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.4.0/spring-boot-autoconfigure-3.4.0.jar:/Users/krunal/.m2/repository/org/testcontainers/testcontainers/1.21.4/testcontainers-1.21.4.jar:/Users/krunal/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/Users/krunal/.m2/repository/org/hamcrest/hamcrest-core/2.2/hamcrest-core-2.2.jar:/Users/krunal/.m2/repository/org/rnorth/duct-tape/duct-tape/1.0.8/duct-tape-1.0.8.jar:/Users/krunal/.m2/repository/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar:/Users/krunal/.m2/repository/com/github/docker-java/docker-java-api/3.4.2/docker-java-api-3.4.2.jar:/Users/krunal/.m2/repository/com/github/docker-java/docker-java-transport-zerodep/3.4.2/docker-java-transport-zerodep-3.4.2.jar:/Users/krunal/.m2/repository/com/github/docker-java/docker-java-transport/3.4.2/docker-java-transport-3.4.2.jar:/Users/krunal/.m2/repository/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar:/Users/krunal/.m2/repository/org/springframework/kafka/spring-kafka-test/3.3.0/spring-kafka-test-3.3.0.jar:/Users/krunal/.m2/repository/org/apache/zookeeper/zookeeper/3.8.4/zookeeper-3.8.4.jar:/Users/krunal/.m2/repository/org/apache/zookeeper/zookeeper-jute/3.8.4/zookeeper-jute-3.8.4.jar:/Users/krunal/.m2/repository/org/apache/yetus/audience-annotations/0.12.0/audience-annotations-0.12.0.jar:/Users/krunal/.m2/repository/io/netty/netty-transport-native-epoll/4.1.115.Final/netty-transport-native-epoll-4.1.115.Final.jar:/Users/krunal/.m2/repository/io/netty/netty-transport-classes-epoll/4.1.115.Final/netty-transport-classes-epoll-4.1.115.Final.jar:/Users/krunal/.m2/repository/ch/qos/logback/logback-core/1.5.12/logback-core-1.5.12.jar:/Users/krunal/.m2/repository/ch/qos/logback/logback-classic/1.5.12/logback-classic-1.5.12.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-metadata/3.8.1/kafka-metadata-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-raft/3.8.1/kafka-raft-3.8.1.jar:/Users/krunal/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1.jar:/Users/krunal/.m2/repository/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/Users/krunal/.m2/repository/org/pcollections/pcollections/4.0.1/pcollections-4.0.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-streams-test-utils/3.8.1/kafka-streams-test-utils-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-streams/3.8.1/kafka-streams-3.8.1.jar:/Users/krunal/.m2/repository/org/rocksdb/rocksdbjni/7.9.2/rocksdbjni-7.9.2.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1.jar:/Users/krunal/.m2/repository/org/scala-lang/scala-library/2.13.14/scala-library-2.13.14.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-group-coordinator-api/3.8.1/kafka-group-coordinator-api-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-group-coordinator/3.8.1/kafka-group-coordinator-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-transaction-coordinator/3.8.1/kafka-transaction-coordinator-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-storage-api/3.8.1/kafka-storage-api-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-tools-api/3.8.1/kafka-tools-api-3.8.1.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-storage/3.8.1/kafka-storage-3.8.1.jar:/Users/krunal/.m2/repository/com/github/ben-manes/caffeine/caffeine/3.1.8/caffeine-3.1.8.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server/3.8.1/kafka-server-3.8.1.jar:/Users/krunal/.m2/repository/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar:/Users/krunal/.m2/repository/commons-validator/commons-validator/1.7/commons-validator-1.7.jar:/Users/krunal/.m2/repository/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar:/Users/krunal/.m2/repository/commons-digester/commons-digester/2.1/commons-digester-2.1.jar:/Users/krunal/.m2/repository/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar:/Users/krunal/.m2/repository/com/fasterxml/jackson/module/jackson-module-scala_2.13/2.18.1/jackson-module-scala_2.13-2.18.1.jar:/Users/krunal/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/Users/krunal/.m2/repository/org/bitbucket/b_c/jose4j/0.9.4/jose4j-0.9.4.jar:/Users/krunal/.m2/repository/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar:/Users/krunal/.m2/repository/org/scala-lang/modules/scala-java8-compat_2.13/1.0.2/scala-java8-compat_2.13-1.0.2.jar:/Users/krunal/.m2/repository/org/scala-lang/scala-reflect/2.13.14/scala-reflect-2.13.14.jar:/Users/krunal/.m2/repository/com/typesafe/scala-logging/scala-logging_2.13/3.9.4/scala-logging_2.13-3.9.4.jar:/Users/krunal/.m2/repository/io/dropwizard/metrics/metrics-core/4.1.12.1/metrics-core-4.1.12.1.jar:/Users/krunal/.m2/repository/commons-cli/commons-cli/1.4/commons-cli-1.4.jar:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar:/Users/krunal/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.3/junit-jupiter-api-5.11.3.jar:/Users/krunal/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/krunal/.m2/repository/org/junit/platform/junit-platform-commons/1.11.3/junit-platform-commons-1.11.3.jar:/Users/krunal/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/krunal/.m2/repository/org/junit/platform/junit-platform-launcher/1.11.3/junit-platform-launcher-1.11.3.jar:/Users/krunal/.m2/repository/org/junit/platform/junit-platform-engine/1.11.3/junit-platform-engine-1.11.3.jar:/Users/krunal/.m2/repository/org/testcontainers/junit-jupiter/1.21.4/junit-jupiter-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/clickhouse/1.21.4/clickhouse-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/jdbc/1.21.4/jdbc-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/database-commons/1.21.4/database-commons-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/minio/1.21.4/minio-1.21.4.jar:/Users/krunal/.m2/repository/org/testcontainers/kafka/1.21.4/kafka-1.21.4.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/krunal"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-04-15"/>
+    <property name="java.home" value="/Users/krunal/Library/Java/JavaVirtualMachines/corretto-21.0.7/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/krunal/REPO/DataLakePOC"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="FILE_LOG_CHARSET" value="UTF-8"/>
+    <property name="java.awt.headless" value="true"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/krunal/REPO/DataLakePOC/target/surefire/surefirebooter-20260104183248433_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="21.0.7+6-LTS"/>
+    <property name="user.name" value="krunal"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="15.5"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Corretto-21.0.7.6.1"/>
+    <property name="maven.ext.class.path" value="/Applications/IntelliJ IDEA CE.app/Contents/plugins/maven/lib/maven-event-listener.jar"/>
+    <property name="localRepository" value="/Users/krunal/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/corretto/corretto-21/issues/"/>
+    <property name="java.io.tmpdir" value="/var/folders/b1/9ghb3cv977b_6fts2y_q7lth0000gp/T/"/>
+    <property name="idea.version" value="2025.2.2"/>
+    <property name="catalina.home" value="/private/var/folders/b1/9ghb3cv977b_6fts2y_q7lth0000gp/T/tomcat.0.5932244289790359266"/>
+    <property name="com.zaxxer.hikari.pool_number" value="1"/>
+    <property name="java.version" value="21.0.7"/>
+    <property name="user.dir" value="/Users/krunal/REPO/DataLakePOC"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="jansi.passthrough" value="true"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="PID" value="1953"/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
+    <property name="catalina.base" value="/private/var/folders/b1/9ghb3cv977b_6fts2y_q7lth0000gp/T/tomcat.0.5932244289790359266"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/krunal/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Amazon.com Inc."/>
+    <property name="java.vm.version" value="21.0.7+6-LTS"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="maven.repo.local" value="/Users/krunal/.m2/repository"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="65.0"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSSXXX} %5p --- [%15.15t] %-40.40logger{39} : %m%n"/>
+    <property name="LOGGED_APPLICATION_NAME" value="[DataLakePOC] "/>
+  </properties>
+  <testcase name="testFullKafkaFlow_Testcontainers" classname="org.example.integration.DataFlowKafkaTestcontainersTest" time="2.093">
+    <system-out><![CDATA[18:32:49.346 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [org.example.integration.DataFlowKafkaTestcontainersTest]: DataFlowKafkaTestcontainersTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:32:49.521 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration org.example.DataLakeApplication for test class org.example.integration.DataFlowKafkaTestcontainersTest
+18:32:49.673 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+18:32:49.676 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+18:32:49.702 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 1.21.4
+18:32:50.243 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Environment variables, system properties and defaults. Resolved dockerHost=unix:///Users/krunal/.docker/run/docker.sock
+18:32:50.244 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+18:32:50.260 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.1.3
+  API Version: 1.52
+  Operating System: Docker Desktop
+  Total Memory: 7836 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/krunal/Library/Containers/com.docker.docker/Data/docker-cli.sock
+18:32:50.368 [main] INFO tc.testcontainers/ryuk:0.12.0 -- Creating container for image: testcontainers/ryuk:0.12.0
+18:32:50.621 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+18:32:50.770 [main] INFO tc.testcontainers/ryuk:0.12.0 -- Container testcontainers/ryuk:0.12.0 is starting: 31f87a5658ac41abcd311d9e82f35bb15e0dbf048cab9adb1632cd9bc46922e7
+18:32:51.160 [main] INFO tc.testcontainers/ryuk:0.12.0 -- Container testcontainers/ryuk:0.12.0 started in PT0.792364S
+18:32:51.170 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+18:32:51.170 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+18:32:51.171 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+18:32:51.172 [main] INFO tc.confluentinc/cp-kafka:7.5.0 -- Creating container for image: confluentinc/cp-kafka:7.5.0
+18:32:51.241 [main] INFO tc.confluentinc/cp-kafka:7.5.0 -- Container confluentinc/cp-kafka:7.5.0 is starting: b39a6dadc112b9e72a1a86b364fd2cd257be0ab8ce770f02acff9408b6b05d76
+18:32:56.635 [main] INFO tc.confluentinc/cp-kafka:7.5.0 -- Container confluentinc/cp-kafka:7.5.0 started in PT5.463789S
+18:32:56.637 [main] INFO tc.redis:alpine -- Creating container for image: redis:alpine
+18:32:56.739 [main] INFO tc.redis:alpine -- Container redis:alpine is starting: 5bea160df983a06ce87c7498335415b9ad8075986f061092b15f7a709ec8fa33
+18:32:57.270 [main] INFO tc.redis:alpine -- Container redis:alpine started in PT0.633171S
+18:32:57.315 [main] INFO tc.minio/minio:latest -- Creating container for image: minio/minio:latest
+18:32:57.391 [main] INFO tc.minio/minio:latest -- Container minio/minio:latest is starting: 753212dd3d9c352de85744e1f17768ec24ac2cabc8b407cdc180523dbe392c56
+18:32:57.725 [main] INFO org.testcontainers.containers.wait.strategy.HttpWaitStrategy -- /epic_sutherland: Waiting for 60 seconds for URL: http://localhost:50122/minio/health/live (where port 50122 maps to container port 9000)
+18:32:58.739 [main] INFO tc.minio/minio:latest -- Container minio/minio:latest started in PT1.423571S
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2026-01-04T18:32:59.091+05:30  INFO --- [           main] o.e.i.DataFlowKafkaTestcontainersTest    : Starting DataFlowKafkaTestcontainersTest using Java 21.0.7 with PID 1953 (started by krunal in /Users/krunal/REPO/DataLakePOC)
+2026-01-04T18:32:59.093+05:30  INFO --- [           main] o.e.i.DataFlowKafkaTestcontainersTest    : No active profile set, falling back to 1 default profile: "default"
+2026-01-04T18:32:59.770+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-04T18:32:59.772+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-04T18:32:59.933+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 148 ms. Found 1 JPA repository interface.
+2026-01-04T18:32:59.950+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-04T18:32:59.951+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-04T18:32:59.965+05:30  INFO --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface org.example.consent.repository.ConsentRuleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-04T18:32:59.966+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2026-01-04T18:33:00.602+05:30  INFO --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2026-01-04T18:33:00.614+05:30  INFO --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-04T18:33:00.614+05:30  INFO --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.33]
+2026-01-04T18:33:00.663+05:30  INFO --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-04T18:33:00.664+05:30  INFO --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1550 ms
+2026-01-04T18:33:00.692+05:30  INFO --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-04T18:33:00.934+05:30  INFO --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-04T18:33:00.936+05:30  INFO --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-04T18:33:00.947+05:30  INFO --- [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-01-04T18:33:01.073+05:30  INFO --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-04T18:33:01.137+05:30  INFO --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2026-01-04T18:33:01.174+05:30  INFO --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-04T18:33:01.493+05:30  INFO --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-04T18:33:01.547+05:30  WARN --- [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-04T18:33:01.561+05:30  INFO --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-04T18:33:02.627+05:30  INFO --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-04T18:33:02.675+05:30  INFO --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-04T18:33:03.646+05:30  WARN --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-04T18:33:04.220+05:30  INFO --- [           main] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.controllers = []
+	bootstrap.servers = [PLAINTEXT://localhost:50117]
+	client.dns.lookup = use_all_dns_ips
+	client.id = DataLakePOC-admin-0
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	enable.metrics.push = true
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2026-01-04T18:33:04.371+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-04T18:33:04.371+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-04T18:33:04.371+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767531784369
+2026-01-04T18:33:04.750+05:30  WARN --- [LakePOC-admin-0] o.a.k.clients.admin.KafkaAdminClient     : [AdminClient clientId=DataLakePOC-admin-0] The DescribeTopicPartitions API is not supported, using Metadata API to describe topics.
+2026-01-04T18:33:05.146+05:30  INFO --- [LakePOC-admin-0] o.a.kafka.common.utils.AppInfoParser     : App info kafka.admin.client for DataLakePOC-admin-0 unregistered
+2026-01-04T18:33:05.151+05:30  INFO --- [LakePOC-admin-0] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-01-04T18:33:05.151+05:30  INFO --- [LakePOC-admin-0] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-01-04T18:33:05.151+05:30  INFO --- [LakePOC-admin-0] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-01-04T18:33:05.167+05:30  INFO --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 50132 (http) with context path '/'
+2026-01-04T18:33:05.189+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:50117]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-gold-group-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = gold-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-04T18:33:05.230+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-04T18:33:05.274+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-04T18:33:05.274+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-04T18:33:05.274+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767531785274
+2026-01-04T18:33:05.277+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Subscribed to topic(s): telemetry-silver-saved
+2026-01-04T18:33:05.285+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:50117]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-silver-group-2
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = silver-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-04T18:33:05.285+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-04T18:33:05.293+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-04T18:33:05.293+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-04T18:33:05.293+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767531785293
+2026-01-04T18:33:05.293+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Subscribed to topic(s): telemetry-bronze-saved
+2026-01-04T18:33:05.295+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:50117]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-bronze-group-3
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = bronze-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-04T18:33:05.296+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-04T18:33:05.305+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-04T18:33:05.305+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-04T18:33:05.305+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767531785305
+2026-01-04T18:33:05.305+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Subscribed to topic(s): telemetry-ingest
+2026-01-04T18:33:05.307+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:50117]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-gold-index-manager-4
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = gold-index-manager
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-04T18:33:05.308+05:30  INFO --- [ntainer#3-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Cluster ID: Qbx82x9bSu63VZM0hO-k3Q
+2026-01-04T18:33:05.308+05:30  INFO --- [ntainer#2-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Cluster ID: Qbx82x9bSu63VZM0hO-k3Q
+2026-01-04T18:33:05.308+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-04T18:33:05.317+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-04T18:33:05.317+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-04T18:33:05.317+05:30  INFO --- [ntainer#0-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Cluster ID: Qbx82x9bSu63VZM0hO-k3Q
+2026-01-04T18:33:05.317+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767531785317
+2026-01-04T18:33:05.318+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Subscribed to topic(s): consent-events
+2026-01-04T18:33:05.330+05:30  INFO --- [ntainer#1-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Cluster ID: Qbx82x9bSu63VZM0hO-k3Q
+2026-01-04T18:33:05.333+05:30  INFO --- [           main] o.e.i.DataFlowKafkaTestcontainersTest    : Started DataFlowKafkaTestcontainersTest in 6.541 seconds (process running for 16.805)
+2026-01-04T18:33:05.434+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Discovered group coordinator localhost:50117 (id: 2147483646 rack: null)
+2026-01-04T18:33:05.436+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] (Re-)joining group
+2026-01-04T18:33:05.441+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Discovered group coordinator localhost:50117 (id: 2147483646 rack: null)
+2026-01-04T18:33:05.442+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] (Re-)joining group
+2026-01-04T18:33:05.453+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Discovered group coordinator localhost:50117 (id: 2147483646 rack: null)
+2026-01-04T18:33:05.454+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] (Re-)joining group
+2026-01-04T18:33:05.464+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Discovered group coordinator localhost:50117 (id: 2147483646 rack: null)
+2026-01-04T18:33:05.465+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] (Re-)joining group
+2026-01-04T18:33:05.500+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Request joining group due to: need to re-join with the given member-id: consumer-silver-group-2-b9bf1e22-a1d5-4b27-8039-f388103f30a8
+2026-01-04T18:33:05.500+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Request joining group due to: need to re-join with the given member-id: consumer-gold-group-1-6b7f03b8-1008-4bba-9189-440158de275f
+2026-01-04T18:33:05.500+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Request joining group due to: need to re-join with the given member-id: consumer-gold-index-manager-4-8e246e75-f501-409e-95b0-0d3e609b6f86
+2026-01-04T18:33:05.500+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Request joining group due to: need to re-join with the given member-id: consumer-bronze-group-3-5f62f6cb-546c-4784-8f14-ee15e97f39ef
+2026-01-04T18:33:05.500+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] (Re-)joining group
+2026-01-04T18:33:05.501+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] (Re-)joining group
+2026-01-04T18:33:05.501+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] (Re-)joining group
+2026-01-04T18:33:05.501+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] (Re-)joining group
+2026-01-04T18:33:05.557+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-gold-group-1-6b7f03b8-1008-4bba-9189-440158de275f', protocol='range'}
+2026-01-04T18:33:05.565+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-silver-group-2-b9bf1e22-a1d5-4b27-8039-f388103f30a8', protocol='range'}
+2026-01-04T18:33:05.568+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Successfully joined group with generation Generation{generationId=1, memberId='consumer-gold-index-manager-4-8e246e75-f501-409e-95b0-0d3e609b6f86', protocol='range'}
+2026-01-04T18:33:05.569+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Finished assignment for group at generation 1: {consumer-gold-index-manager-4-8e246e75-f501-409e-95b0-0d3e609b6f86=Assignment(partitions=[consent-events-0])}
+2026-01-04T18:33:05.569+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Finished assignment for group at generation 1: {consumer-gold-group-1-6b7f03b8-1008-4bba-9189-440158de275f=Assignment(partitions=[telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2])}
+2026-01-04T18:33:05.569+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Finished assignment for group at generation 1: {consumer-silver-group-2-b9bf1e22-a1d5-4b27-8039-f388103f30a8=Assignment(partitions=[telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2])}
+2026-01-04T18:33:05.582+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-bronze-group-3-5f62f6cb-546c-4784-8f14-ee15e97f39ef', protocol='range'}
+2026-01-04T18:33:05.583+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Finished assignment for group at generation 1: {consumer-bronze-group-3-5f62f6cb-546c-4784-8f14-ee15e97f39ef=Assignment(partitions=[telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2])}
+2026-01-04T18:33:05.707+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-gold-group-1-6b7f03b8-1008-4bba-9189-440158de275f', protocol='range'}
+2026-01-04T18:33:05.707+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Successfully synced group in generation Generation{generationId=1, memberId='consumer-gold-index-manager-4-8e246e75-f501-409e-95b0-0d3e609b6f86', protocol='range'}
+2026-01-04T18:33:05.707+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-silver-group-2-b9bf1e22-a1d5-4b27-8039-f388103f30a8', protocol='range'}
+2026-01-04T18:33:05.708+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Notifying assignor about the new Assignment(partitions=[telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2])
+2026-01-04T18:33:05.707+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-bronze-group-3-5f62f6cb-546c-4784-8f14-ee15e97f39ef', protocol='range'}
+2026-01-04T18:33:05.709+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Notifying assignor about the new Assignment(partitions=[telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2])
+2026-01-04T18:33:05.708+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Notifying assignor about the new Assignment(partitions=[consent-events-0])
+2026-01-04T18:33:05.709+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Notifying assignor about the new Assignment(partitions=[telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2])
+2026-01-04T18:33:05.716+05:30  INFO --- [ntainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Adding newly assigned partitions: telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2
+2026-01-04T18:33:05.715+05:30  INFO --- [ntainer#3-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Adding newly assigned partitions: telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2
+2026-01-04T18:33:05.715+05:30  INFO --- [ntainer#1-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Adding newly assigned partitions: consent-events-0
+2026-01-04T18:33:05.716+05:30  INFO --- [ntainer#2-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Adding newly assigned partitions: telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2
+2026-01-04T18:33:05.751+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Found no committed offset for partition telemetry-bronze-saved-2
+2026-01-04T18:33:05.751+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Found no committed offset for partition telemetry-bronze-saved-1
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Found no committed offset for partition telemetry-bronze-saved-0
+2026-01-04T18:33:05.751+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Found no committed offset for partition telemetry-ingest-1
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Found no committed offset for partition consent-events-0
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Found no committed offset for partition telemetry-ingest-0
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Found no committed offset for partition telemetry-ingest-2
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Found no committed offset for partition telemetry-silver-saved-0
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Found no committed offset for partition telemetry-silver-saved-1
+2026-01-04T18:33:05.752+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Found no committed offset for partition telemetry-silver-saved-2
+2026-01-04T18:33:05.779+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Resetting offset for partition telemetry-silver-saved-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.779+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Resetting offset for partition consent-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.779+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Resetting offset for partition telemetry-bronze-saved-2 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.779+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Resetting offset for partition telemetry-ingest-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.780+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Resetting offset for partition telemetry-bronze-saved-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.780+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Resetting offset for partition telemetry-silver-saved-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.780+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Resetting offset for partition telemetry-bronze-saved-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.780+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Resetting offset for partition telemetry-ingest-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.781+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Resetting offset for partition telemetry-silver-saved-2 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.781+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Resetting offset for partition telemetry-ingest-2 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:50117 (id: 1 rack: null)], epoch=0}}.
+2026-01-04T18:33:05.781+05:30  INFO --- [ntainer#2-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : gold-group: partitions assigned: [telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2]
+2026-01-04T18:33:05.781+05:30  INFO --- [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : bronze-group: partitions assigned: [telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2]
+2026-01-04T18:33:05.781+05:30  INFO --- [ntainer#3-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : silver-group: partitions assigned: [telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2]
+2026-01-04T18:33:05.781+05:30  INFO --- [ntainer#1-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : gold-index-manager: partitions assigned: [consent-events-0]
+2026-01-04T18:33:06.645+05:30  INFO --- [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-04T18:33:06.646+05:30  INFO --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-04T18:33:06.647+05:30  INFO --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-01-04T18:33:06.706+05:30  INFO --- [o-auto-1-exec-1] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = -1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [PLAINTEXT://localhost:50117]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = DataLakePOC-producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.springframework.kafka.support.serializer.JsonSerializer
+
+2026-01-04T18:33:06.706+05:30  INFO --- [o-auto-1-exec-1] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-04T18:33:06.715+05:30  INFO --- [o-auto-1-exec-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=DataLakePOC-producer-1] Instantiated an idempotent producer.
+2026-01-04T18:33:06.726+05:30  INFO --- [o-auto-1-exec-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-04T18:33:06.726+05:30  INFO --- [o-auto-1-exec-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-04T18:33:06.726+05:30  INFO --- [o-auto-1-exec-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767531786726
+2026-01-04T18:33:06.736+05:30  INFO --- [ePOC-producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=DataLakePOC-producer-1] Cluster ID: Qbx82x9bSu63VZM0hO-k3Q
+2026-01-04T18:33:06.760+05:30  INFO --- [ePOC-producer-1] o.a.k.c.p.internals.TransactionManager   : [Producer clientId=DataLakePOC-producer-1] ProducerId set to 0 with epoch 0
+2026-01-04T18:33:06.810+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 44ef9e78-54e4-4df3-8dcf-c64480d9c088
+2026-01-04T18:33:07.034+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.049+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 44ef9e78-54e4-4df3-8dcf-c64480d9c088
+2026-01-04T18:33:07.069+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 4bed5dcc-3f72-4e02-ab1c-4f1148fa2136
+2026-01-04T18:33:07.081+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.081+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 8c400349-ff6d-4157-8693-23ace305ea08
+2026-01-04T18:33:07.085+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.096+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 4bed5dcc-3f72-4e02-ab1c-4f1148fa2136
+2026-01-04T18:33:07.097+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/8c400349-ff6d-4157-8693-23ace305ea08.json
+2026-01-04T18:33:07.098+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 1e7ce481-9f49-4982-808c-d0db5aeeb1ea
+2026-01-04T18:33:07.108+05:30  INFO --- [ntainer#2-0-C-1] o.e.p.listener.GoldConsentProcessor      : Fanning out to Gold based on Consent: 44ef9e78-54e4-4df3-8dcf-c64480d9c088
+2026-01-04T18:33:07.113+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/1e7ce481-9f49-4982-808c-d0db5aeeb1ea.json
+2026-01-04T18:33:07.113+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 0365203a-be94-4eb8-bf19-b0945bc08057
+2026-01-04T18:33:07.119+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.128+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/0365203a-be94-4eb8-bf19-b0945bc08057.json
+2026-01-04T18:33:07.132+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 8c400349-ff6d-4157-8693-23ace305ea08
+2026-01-04T18:33:07.141+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 99677409-dc0f-4367-b3b3-330e8d1a5c1a
+Written to Gold: active/2026-01-04/purpose/research/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.152+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/8c400349-ff6d-4157-8693-23ace305ea08.json
+2026-01-04T18:33:07.155+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/99677409-dc0f-4367-b3b3-330e8d1a5c1a.json
+2026-01-04T18:33:07.155+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: c95b18a3-7b2d-4641-bdbd-e51e5b5ce3c2
+2026-01-04T18:33:07.161+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 1e7ce481-9f49-4982-808c-d0db5aeeb1ea
+Written to Gold: active/2026-01-04/purpose/governmentResearch/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.169+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/c95b18a3-7b2d-4641-bdbd-e51e5b5ce3c2.json
+2026-01-04T18:33:07.169+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 82e64f8b-7052-4010-8953-cd6b318685c6
+Written to Gold: active/2026-01-04/purpose/privateResearch/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.181+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/1e7ce481-9f49-4982-808c-d0db5aeeb1ea.json
+2026-01-04T18:33:07.181+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 0365203a-be94-4eb8-bf19-b0945bc08057
+2026-01-04T18:33:07.184+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/82e64f8b-7052-4010-8953-cd6b318685c6.json
+2026-01-04T18:33:07.185+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: c03d1887-9d30-42da-ae33-9588e0936300
+Written to Gold: active/2026-01-04/purpose/sportsAndPerformance/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.197+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/c03d1887-9d30-42da-ae33-9588e0936300.json
+2026-01-04T18:33:07.197+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: a624b7de-9895-4cfe-817b-efaa386b6704
+2026-01-04T18:33:07.199+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/0365203a-be94-4eb8-bf19-b0945bc08057.json
+Written to Gold: active/2026-01-04/purpose/playerPerformanceEvaluation/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.210+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 99677409-dc0f-4367-b3b3-330e8d1a5c1a
+2026-01-04T18:33:07.212+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/a624b7de-9895-4cfe-817b-efaa386b6704.json
+2026-01-04T18:33:07.212+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: feda9f86-5490-4c26-bc46-d8d12e67eedc
+Written to Gold: active/2026-01-04/purpose/trainingOptimisation/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.225+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/feda9f86-5490-4c26-bc46-d8d12e67eedc.json
+2026-01-04T18:33:07.225+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 48006ddf-a6f7-4d68-8e2d-ecc8433c1fd5
+2026-01-04T18:33:07.227+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/99677409-dc0f-4367-b3b3-330e8d1a5c1a.json
+Written to Gold: active/2026-01-04/purpose/healthAndMedical/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.239+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/48006ddf-a6f7-4d68-8e2d-ecc8433c1fd5.json
+2026-01-04T18:33:07.239+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: c95b18a3-7b2d-4641-bdbd-e51e5b5ce3c2
+2026-01-04T18:33:07.239+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 9db536a8-ddb7-463d-a0d6-ba203d5d7511
+Written to Gold: active/2026-01-04/purpose/clinicalAnalysis/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.252+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/9db536a8-ddb7-463d-a0d6-ba203d5d7511.json
+2026-01-04T18:33:07.252+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 809b473e-2adb-4f76-ade6-32f7c141f858
+2026-01-04T18:33:07.256+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/c95b18a3-7b2d-4641-bdbd-e51e5b5ce3c2.json
+2026-01-04T18:33:07.256+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 82e64f8b-7052-4010-8953-cd6b318685c6
+Written to Gold: active/2026-01-04/purpose/physiologicalMonitoring/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.263+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/809b473e-2adb-4f76-ade6-32f7c141f858.json
+2026-01-04T18:33:07.263+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 114f08fc-f66a-4d45-8fb1-a2d90d09d59c
+Written to Gold: active/2026-01-04/purpose/education/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.273+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/82e64f8b-7052-4010-8953-cd6b318685c6.json
+2026-01-04T18:33:07.274+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: c03d1887-9d30-42da-ae33-9588e0936300
+2026-01-04T18:33:07.277+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/114f08fc-f66a-4d45-8fb1-a2d90d09d59c.json
+2026-01-04T18:33:07.277+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 207b3c85-a4bb-4311-a4a6-b4b2400991b3
+Written to Gold: active/2026-01-04/purpose/universityResearch/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.287+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/c03d1887-9d30-42da-ae33-9588e0936300.json
+2026-01-04T18:33:07.287+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/207b3c85-a4bb-4311-a4a6-b4b2400991b3.json
+2026-01-04T18:33:07.287+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: bd653650-017d-42ff-ba7d-b7a05f1c93c8
+2026-01-04T18:33:07.293+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: a624b7de-9895-4cfe-817b-efaa386b6704
+Written to Gold: active/2026-01-04/purpose/academicStudies/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.298+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/bd653650-017d-42ff-ba7d-b7a05f1c93c8.json
+2026-01-04T18:33:07.298+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 0d6ee884-e501-403e-aa34-ba76aeff8316
+Written to Gold: active/2026-01-04/purpose/technologyAndAI/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.308+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/a624b7de-9895-4cfe-817b-efaa386b6704.json
+2026-01-04T18:33:07.308+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: feda9f86-5490-4c26-bc46-d8d12e67eedc
+2026-01-04T18:33:07.310+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/0d6ee884-e501-403e-aa34-ba76aeff8316.json
+2026-01-04T18:33:07.310+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: 201b0ca4-8178-49ff-8f0a-943a4c6ab006
+Written to Gold: active/2026-01-04/purpose/aiModelTraining/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.324+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/201b0ca4-8178-49ff-8f0a-943a4c6ab006.json
+2026-01-04T18:33:07.324+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Consuming from Ingest: ea1e0001-fc3e-46c0-ab42-2d285facd399
+2026-01-04T18:33:07.326+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/feda9f86-5490-4c26-bc46-d8d12e67eedc.json
+Written to Gold: active/2026-01-04/purpose/machineLearningResearch/athlete_id=athlete-tc-735ca215/data_44ef9e78-54e4-4df3-8dcf-c64480d9c088.json
+2026-01-04T18:33:07.336+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 48006ddf-a6f7-4d68-8e2d-ecc8433c1fd5
+2026-01-04T18:33:07.338+05:30  INFO --- [ntainer#0-0-C-1] o.e.processing.listener.BronzeConsumer   : Saved to Bronze and notified: pending/2026-01-04/athlete-tc-735ca215/ea1e0001-fc3e-46c0-ab42-2d285facd399.json
+2026-01-04T18:33:07.339+05:30  INFO --- [ntainer#2-0-C-1] o.e.p.listener.GoldConsentProcessor      : Fanning out to Gold based on Consent: 4bed5dcc-3f72-4e02-ab1c-4f1148fa2136
+2026-01-04T18:33:07.355+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/48006ddf-a6f7-4d68-8e2d-ecc8433c1fd5.json
+2026-01-04T18:33:07.356+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 9db536a8-ddb7-463d-a0d6-ba203d5d7511
+Written to Gold: active/2026-01-04/purpose/research/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.372+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/9db536a8-ddb7-463d-a0d6-ba203d5d7511.json
+2026-01-04T18:33:07.373+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 809b473e-2adb-4f76-ade6-32f7c141f858
+Written to Gold: active/2026-01-04/purpose/governmentResearch/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+Written to Gold: active/2026-01-04/purpose/privateResearch/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.389+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/809b473e-2adb-4f76-ade6-32f7c141f858.json
+2026-01-04T18:33:07.389+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 114f08fc-f66a-4d45-8fb1-a2d90d09d59c
+Written to Gold: active/2026-01-04/purpose/sportsAndPerformance/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.405+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/114f08fc-f66a-4d45-8fb1-a2d90d09d59c.json
+2026-01-04T18:33:07.405+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: 207b3c85-a4bb-4311-a4a6-b4b2400991b3
+Written to Gold: active/2026-01-04/purpose/playerPerformanceEvaluation/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.418+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Saved to Silver and notified: pending/2026-01-04/athlete-tc-735ca215/207b3c85-a4bb-4311-a4a6-b4b2400991b3.json
+Written to Gold: active/2026-01-04/purpose/trainingOptimisation/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+2026-01-04T18:33:07.426+05:30  INFO --- [ntainer#3-0-C-1] o.e.p.l.SilverEnrichmentProcessor        : Enriching Silver: bd653650-017d-42ff-ba7d-b7a05f1c93c8
+Written to Gold: active/2026-01-04/purpose/healthAndMedical/athlete_id=athlete-tc-735ca215/data_4bed5dcc-3f72-4e02-ab1c-4f1148fa2136.json
+]]></system-out>
+    <system-err><![CDATA[Jan 04, 2026 6:32:48 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 04, 2026 6:32:48 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 04, 2026 6:32:48 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 04, 2026 6:32:49 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 04, 2026 6:32:49 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 04, 2026 6:32:49 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/krunal/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.10/byte-buddy-agent-1.15.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+  </testcase>
+</testsuite>

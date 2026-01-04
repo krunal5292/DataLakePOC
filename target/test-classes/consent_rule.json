@@ -1,0 +1,286 @@
+[
+  {
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "ruleId": "RULE0000365",
+    "ruleName": "Athlete-1-Consent",
+    "description": "I consent to share my data that has the combination...",
+    "consentCreator": "Athlete One",
+    "consentCreatorPersona": "PLAYER",
+    "status": "ACTIVE",
+    "dimensions": {
+      "purpose": {
+        "type": "specific",
+        "values": [
+          {
+            "id": "1",
+            "value": "research",
+            "title": "Research"
+          },
+          {
+            "id": "11",
+            "value": "governmentResearch",
+            "title": "Government Research"
+          },
+          {
+            "id": "12",
+            "value": "privateResearch",
+            "title": "Private Research"
+          },
+          {
+            "id": "2",
+            "value": "sportsAndPerformance",
+            "title": "Sports & Performance"
+          },
+          {
+            "id": "21",
+            "value": "playerPerformanceEvaluation",
+            "title": "Player Performance Evaluation"
+          },
+          {
+            "id": "22",
+            "value": "trainingOptimisation",
+            "title": "Training Optimisation"
+          },
+          {
+            "id": "3",
+            "value": "healthAndMedical",
+            "title": "Health & Medical"
+          },
+          {
+            "id": "31",
+            "value": "clinicalAnalysis",
+            "title": "Clinical Analysis"
+          },
+          {
+            "id": "32",
+            "value": "physiologicalMonitoring",
+            "title": "Physiological Monitoring"
+          },
+          {
+            "id": "4",
+            "value": "education",
+            "title": "Education"
+          },
+          {
+            "id": "41",
+            "value": "universityResearch",
+            "title": "University Research"
+          },
+          {
+            "id": "42",
+            "value": "academicStudies",
+            "title": "Academic Studies"
+          },
+          {
+            "id": "5",
+            "value": "technologyAndAI",
+            "title": "Technology & AI"
+          },
+          {
+            "id": "51",
+            "value": "aiModelTraining",
+            "title": "AI Model Training"
+          },
+          {
+            "id": "52",
+            "value": "machineLearningResearch",
+            "title": "Machine Learning Research"
+          }
+        ]
+      },
+      "activity": {
+        "type": "any",
+        "values": []
+      },
+      "events": {
+        "type": "specific",
+        "values": [
+          {
+            "id": "1",
+            "value": "summer_cup_2025",
+            "title": "Summer Cup 2025"
+          },
+          {
+            "id": "2",
+            "value": "wimbledon_2025",
+            "title": "Wimbledon 2025"
+          }
+        ]
+      },
+      "consumerType": {
+        "type": "any",
+        "values": []
+      },
+      "consumerId": {
+        "type": "any",
+        "values": []
+      },
+      "fields": {
+        "type": "any",
+        "specifications": []
+      },
+      "temporal": {
+        "type": "any"
+      },
+      "price": {
+        "type": "any"
+      },
+      "validity": {
+        "type": "any"
+      },
+      "anonymization": {
+        "type": "any",
+        "required": false,
+        "values": [
+          {
+            "id": "0",
+            "value": "noAnonymous",
+            "title": "No Anonymous"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "userId": "660e8400-e29b-41d4-a716-446655440001",
+    "ruleId": "RULE0000366",
+    "ruleName": "Athlete-2-Consent",
+    "description": "I consent to share my data that has the combination...",
+    "consentCreator": "Athlete Two",
+    "consentCreatorPersona": "PLAYER",
+    "status": "ACTIVE",
+    "dimensions": {
+      "purpose": {
+        "type": "specific",
+        "values": [
+          {
+            "id": "1",
+            "value": "research",
+            "title": "Research"
+          },
+          {
+            "id": "11",
+            "value": "governmentResearch",
+            "title": "Government Research"
+          },
+          {
+            "id": "12",
+            "value": "privateResearch",
+            "title": "Private Research"
+          },
+          {
+            "id": "2",
+            "value": "sportsAndPerformance",
+            "title": "Sports & Performance"
+          },
+          {
+            "id": "21",
+            "value": "playerPerformanceEvaluation",
+            "title": "Player Performance Evaluation"
+          },
+          {
+            "id": "22",
+            "value": "trainingOptimisation",
+            "title": "Training Optimisation"
+          },
+          {
+            "id": "3",
+            "value": "healthAndMedical",
+            "title": "Health & Medical"
+          },
+          {
+            "id": "31",
+            "value": "clinicalAnalysis",
+            "title": "Clinical Analysis"
+          },
+          {
+            "id": "32",
+            "value": "physiologicalMonitoring",
+            "title": "Physiological Monitoring"
+          },
+          {
+            "id": "4",
+            "value": "education",
+            "title": "Education"
+          },
+          {
+            "id": "41",
+            "value": "universityResearch",
+            "title": "University Research"
+          },
+          {
+            "id": "42",
+            "value": "academicStudies",
+            "title": "Academic Studies"
+          },
+          {
+            "id": "5",
+            "value": "technologyAndAI",
+            "title": "Technology & AI"
+          },
+          {
+            "id": "51",
+            "value": "aiModelTraining",
+            "title": "AI Model Training"
+          },
+          {
+            "id": "52",
+            "value": "machineLearningResearch",
+            "title": "Machine Learning Research"
+          }
+        ]
+      },
+      "activity": {
+        "type": "any",
+        "values": []
+      },
+      "events": {
+        "type": "specific",
+        "values": [
+          {
+            "id": "1",
+            "value": "summer_cup_2025",
+            "title": "Summer Cup 2025"
+          },
+          {
+            "id": "2",
+            "value": "wimbledon_2025",
+            "title": "Wimbledon 2025"
+          }
+        ]
+      },
+      "consumerType": {
+        "type": "any",
+        "values": []
+      },
+      "consumerId": {
+        "type": "any",
+        "values": []
+      },
+      "fields": {
+        "type": "any",
+        "specifications": []
+      },
+      "temporal": {
+        "type": "any"
+      },
+      "price": {
+        "type": "any"
+      },
+      "validity": {
+        "type": "any"
+      },
+      "anonymization": {
+        "type": "any",
+        "required": false,
+        "values": [
+          {
+            "id": "0",
+            "value": "noAnonymous",
+            "title": "No Anonymous"
+          }
+        ]
+      }
+    }
+  }
+]

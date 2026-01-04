@@ -1,0 +1,6 @@
+/Users/krunal/REPO/DataLakePOC/src/test/java/org/example/consent/service/BitmaskGeneratorTest.java
+/Users/krunal/REPO/DataLakePOC/src/test/java/org/example/integration/BaseTestcontainersTest.java
+/Users/krunal/REPO/DataLakePOC/src/test/java/org/example/integration/DataFlowKafkaTestcontainersTest.java
+/Users/krunal/REPO/DataLakePOC/src/test/java/org/example/integration/DataFlowRevocationTestcontainersTest.java
+/Users/krunal/REPO/DataLakePOC/src/test/java/org/example/manual/DataFlowKafkaManualTest.java
+/Users/krunal/REPO/DataLakePOC/src/test/java/org/example/manual/DataFlowRevocationManualTest.java
