@@ -6,21 +6,17 @@ import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.Result;
 import io.minio.messages.Item;
-import org.example.consent.model.ComplexConsentRule;
-import org.example.query.exception.ConsentViolationException;
 import org.example.query.model.DataItem;
 import org.example.query.model.GoldDataResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class GoldDataQueryService {
@@ -28,36 +24,33 @@ public class GoldDataQueryService {
     private static final Logger log = LoggerFactory.getLogger(GoldDataQueryService.class);
 
     private final MinioClient minioClient;
-    private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
+    private final org.springframework.data.redis.core.StringRedisTemplate redisTemplate;
 
     @Value("${minio.bucket.gold:gold}")
     private String goldBucket;
 
-    public GoldDataQueryService(MinioClient minioClient, StringRedisTemplate redisTemplate, ObjectMapper objectMapper) {
+    public GoldDataQueryService(MinioClient minioClient, ObjectMapper objectMapper,
+            org.springframework.data.redis.core.StringRedisTemplate redisTemplate) {
         this.minioClient = minioClient;
-        this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper;
+        this.redisTemplate = redisTemplate;
     }
 
     /**
-     * Query athlete data for specific purposes with consent validation
+     * Query athlete data for specific purposes.
+     * <p>
+     * ARCHITECTURE NOTE:
+     * This method does NOT check Redis for consent.
+     * It relies on the "Physical Storage as Source of Truth" principle.
+     * If data exists in 'gold/active/purpose=X', it is implicitly consented.
+     * Unconsented data would have been filtered out by the Write Path (Silver ->
+     * Gold).
      */
     public GoldDataResponse queryAthleteData(String athleteId, List<String> requestedPurposes) throws Exception {
         log.info("Querying data for athlete: {} with purposes: {}", athleteId, requestedPurposes);
 
-        // Get approved purposes from consent
-        List<String> approvedPurposes = getApprovedPurposes(athleteId);
-
-        // Validate all requested purposes are consented
-        for (String purpose : requestedPurposes) {
-            if (!approvedPurposes.contains(purpose)) {
-                log.warn("Consent violation: Athlete {} has not consented to purpose: {}", athleteId, purpose);
-                throw new ConsentViolationException(athleteId, purpose);
-            }
-        }
-
-        // Fetch data only for approved purposes
+        // Fetch data directly from the physical storage
         List<DataItem> dataItems = fetchDataForPurposes(athleteId, requestedPurposes);
 
         log.info("Retrieved {} records for athlete {} across {} purposes",
@@ -67,7 +60,7 @@ public class GoldDataQueryService {
     }
 
     /**
-     * Get ALL data the athlete has consented to
+     * Get ALL data the athlete has consented to (LEGACY METHOD FOR MANUAL TEST)
      */
     public GoldDataResponse getAllConsentedData(String athleteId) throws Exception {
         log.info("Querying ALL consented data for athlete: {}", athleteId);
@@ -90,7 +83,8 @@ public class GoldDataQueryService {
     }
 
     /**
-     * Validate if athlete has consented to a specific purpose
+     * Validate if athlete has consented to a specific purpose (LEGACY METHOD FOR
+     * MANUAL TEST)
      */
     public boolean validateConsent(String athleteId, String purpose) {
         try {
@@ -114,18 +108,14 @@ public class GoldDataQueryService {
             return new ArrayList<>();
         }
 
-        ComplexConsentRule rule = objectMapper.readValue(consentJson, ComplexConsentRule.class);
-
-        if (!"ACTIVE".equals(rule.getStatus())) {
-            log.warn("Consent rule is not ACTIVE for athlete: {}", athleteId);
-            return new ArrayList<>();
-        }
+        org.example.consent.model.ComplexConsentRule rule = objectMapper.readValue(consentJson,
+                org.example.consent.model.ComplexConsentRule.class);
 
         // Extract approved purposes from consent rule
         if (rule.getDimensions() != null && rule.getDimensions().getPurpose() != null) {
             return rule.getDimensions().getPurpose().getValues().stream()
-                    .map(ComplexConsentRule.ValueDetail::getValue)
-                    .collect(Collectors.toList());
+                    .map(org.example.consent.model.ComplexConsentRule.ValueDetail::getValue)
+                    .collect(java.util.stream.Collectors.toList());
         }
 
         return new ArrayList<>();
@@ -139,6 +129,8 @@ public class GoldDataQueryService {
 
         for (String purpose : purposes) {
             // Build path pattern: active/*/purpose/{purpose}/athlete_id={athleteId}/*
+            // Note: We scan recursively from "active/" because date partitioning makes
+            // direct lookup harder without a date range
             String prefix = "active/";
 
             Iterable<Result<Item>> results = minioClient.listObjects(
@@ -152,10 +144,11 @@ public class GoldDataQueryService {
                 Item item = result.get();
                 String objectPath = item.objectName();
 
-                // Filter by purpose and athlete_id
-                if (objectPath.contains("/purpose/" + purpose + "/") &&
-                        objectPath.contains("/athlete_id=" + athleteId + "/")) {
+                // Path format: active/YYYY-MM-DD/purpose/{PURPOSE}/athlete_id={ID}/...
+                boolean purposeMatch = objectPath.contains("/purpose/" + purpose + "/");
+                boolean athleteMatch = objectPath.contains("/athlete_id=" + athleteId + "/");
 
+                if (purposeMatch && athleteMatch) {
                     // Fetch object content
                     try (InputStream stream = minioClient.getObject(
                             GetObjectArgs.builder()

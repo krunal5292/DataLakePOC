@@ -1,16 +1,18 @@
 package org.example.processing.listener;
 
-import lombok.extern.slf4j.Slf4j;
 import org.example.config.KafkaConfig;
 import org.example.ingestion.model.TelemetryMessage;
 import org.example.ingestion.service.IngestionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 public class BronzeConsumer {
+
+    private static final Logger log = LoggerFactory.getLogger(BronzeConsumer.class);
 
     private final IngestionService ingestionService;
     private final KafkaTemplate<String, TelemetryMessage> kafkaTemplate;

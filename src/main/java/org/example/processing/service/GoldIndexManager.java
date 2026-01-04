@@ -2,10 +2,11 @@ package org.example.processing.service;
 
 import io.minio.*;
 import io.minio.messages.Item;
-import lombok.extern.slf4j.Slf4j;
 import org.example.config.KafkaConfig;
 import org.example.consent.model.ConsentChangedEvent;
 import org.example.ingestion.model.TelemetryMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class GoldIndexManager {
+
+    private static final Logger log = LoggerFactory.getLogger(GoldIndexManager.class);
 
     private final MinioClient minioClient;
     private final KafkaTemplate<String, Object> kafkaTemplate;

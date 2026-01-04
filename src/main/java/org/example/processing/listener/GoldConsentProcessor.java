@@ -1,15 +1,17 @@
 package org.example.processing.listener;
 
-import lombok.extern.slf4j.Slf4j;
 import org.example.config.KafkaConfig;
 import org.example.ingestion.model.TelemetryMessage;
 import org.example.processing.service.GoldService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 public class GoldConsentProcessor {
+
+    private static final Logger log = LoggerFactory.getLogger(GoldConsentProcessor.class);
 
     private final GoldService goldService;
 

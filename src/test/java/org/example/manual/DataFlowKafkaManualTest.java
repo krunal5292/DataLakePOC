@@ -87,11 +87,11 @@ public class DataFlowKafkaManualTest {
 
             // --- Comprehensive Gold Layer Verification ---
 
-            // 1. Research: Explicitly Allowed. Should contain ALL 13 ingested rows.
+            // 1. Research: Explicitly Allowed. Should contain ALL 13 rows.
             int researchCount = getGoldFileCount("research", athleteId);
             assertEquals(13, researchCount, "Research purpose should have exactly 13 records (1 per ingested row)");
 
-            // 2. Education: Explicitly Allowed. Should contain ALL 13 ingested rows.
+            // 2. Education: Explicitly Allowed. Should contain ALL 13 rows.
             int educationCount = getGoldFileCount("education", athleteId);
             assertEquals(13, educationCount, "Education purpose should have exactly 13 records");
 

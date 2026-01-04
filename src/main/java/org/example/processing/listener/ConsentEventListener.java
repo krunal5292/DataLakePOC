@@ -1,15 +1,17 @@
 package org.example.processing.listener;
 
-import lombok.extern.slf4j.Slf4j;
 import org.example.config.KafkaConfig;
 import org.example.consent.model.ConsentChangedEvent;
 import org.example.processing.service.GoldIndexManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class ConsentEventListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ConsentEventListener.class);
 
     private final GoldIndexManager goldIndexManager;
 
