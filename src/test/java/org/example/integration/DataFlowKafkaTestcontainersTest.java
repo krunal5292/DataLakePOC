@@ -44,14 +44,28 @@ public class DataFlowKafkaTestcontainersTest extends BaseTestcontainersTest {
     public void testFullKafkaFlow_Testcontainers() throws Exception {
         String athleteId = "athlete-tc-" + UUID.randomUUID().toString().substring(0, 8);
 
-        // 1. Setup Complex Consent Rule from JSON (load array and use first rule)
+        // 1. Setup Complex Consent Rule from JSON and extract purposes dynamically
+        ComplexConsentRule rule;
+        List<String> consentedPurposes = new java.util.ArrayList<>();
+
         try (InputStream stream = resourceLoader.getResource("classpath:consent_rule.json").getInputStream()) {
             List<ComplexConsentRule> rules = objectMapper.readValue(stream, new TypeReference<>() {
             });
-            ComplexConsentRule rule = rules.get(0); // Use first consent rule as template
+            rule = rules.get(0); // Use first consent rule as template
             rule.setUserId(athleteId); // Override with test athlete ID
+
+            // Dynamically extract all consented purposes
+            if (rule.getDimensions().getPurpose() != null
+                    && rule.getDimensions().getPurpose().getValues() != null) {
+                for (ComplexConsentRule.ValueDetail purpose : rule.getDimensions().getPurpose().getValues()) {
+                    consentedPurposes.add(purpose.getValue());
+                }
+            }
+
             redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
         }
+
+        System.out.println("\n📋 Consented Purposes: " + consentedPurposes);
 
         // 2. Ingest Data from JSON
         List<Map<String, Object>> dataRows;
@@ -59,6 +73,9 @@ public class DataFlowKafkaTestcontainersTest extends BaseTestcontainersTest {
             dataRows = objectMapper.readValue(stream, new TypeReference<>() {
             });
         }
+
+        int expectedRecordCount = dataRows.size(); // Dynamic count based on actual data
+        System.out.println("📤 Ingesting " + expectedRecordCount + " records...\n");
 
         for (Map<String, Object> row : dataRows) {
             row.put("athlete_id", athleteId);
@@ -75,12 +92,20 @@ public class DataFlowKafkaTestcontainersTest extends BaseTestcontainersTest {
             boolean silverExists = checkBucketPathExists("silver", athleteId);
             assertTrue(silverExists, "Silver bucket should have data for athlete");
 
-            // Check Gold
-            boolean researchExists = checkGoldPathExists("research", athleteId);
-            boolean medicalExists = checkGoldPathExists("healthAndMedical", athleteId);
+            // --- DYNAMIC Gold Layer Verification ---
+            System.out.println("\n🔍 VERIFYING GOLD LAYER:");
 
-            assertTrue(researchExists, "Research bucket should have data");
-            assertTrue(medicalExists, "Medical bucket should have data");
+            // Verify ALL consented purposes have data
+            for (String purpose : consentedPurposes) {
+                boolean exists = checkGoldPathExists(purpose, athleteId);
+                assertTrue(exists, "Purpose '" + purpose + "' should have data in Gold layer");
+                System.out.println("  ✅ Purpose '" + purpose + "': Data found");
+            }
+
+            // Verify unconsented purpose has NO data
+            boolean marketingExists = checkGoldPathExists("marketing", athleteId);
+            assertTrue(!marketingExists, "Marketing (unconsented) should have NO data");
+            System.out.println("  ✅ Purpose 'marketing' (unconsented): No data");
         });
     }
 
