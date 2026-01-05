@@ -42,6 +42,7 @@ The system capabilities include:
 *   **REQ-ING-03**: The system MUST ensure durability of all acknowledged data events.
 *   **REQ-ING-04**: The system MUST support high-concurrency ingestion without data loss.
 *   **REQ-ING-05 (Diverse Sources)**: The system MUST support ingestion from multiple channel types including REST APIs, Streaming platforms (e.g., Kafka/Kinesis connectors), Socket connections, and Batch File uploads. The system must normalize this diversity into a standard processing format.
+*   **REQ-ING-06 (Aggregated Data)**: The system MUST support the ingestion and preservation of pre-aggregated data structures (e.g., daily summaries from wearables like Whoop) alongside raw telemetry. The system MUST be capable of identifying and serving these aggregate records without forcing decomposition into raw events.
 
 ### 3.2 Consent Management
 *   **REQ-CS-01**: The system MUST allow the definition of Consent Rules for each athlete.
