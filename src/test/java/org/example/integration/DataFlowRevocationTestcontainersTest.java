@@ -60,15 +60,29 @@ public class DataFlowRevocationTestcontainersTest extends BaseTestcontainersTest
         String athleteId = "athlete-rev-" + UUID.randomUUID().toString().substring(0, 8);
         String consentKey = "consent:rule:" + athleteId;
 
-        // 1. SETUP CONSENT RULE FROM JSON (load array and use first rule)
+        // 1. SETUP CONSENT RULE FROM JSON and extract first purpose dynamically
         ComplexConsentRule rule;
+        String testPurpose; // Will use first consented purpose for revocation test
+
         try (InputStream stream = resourceLoader.getResource("classpath:consent_rule.json").getInputStream()) {
             List<ComplexConsentRule> rules = objectMapper.readValue(stream, new TypeReference<>() {
             });
             rule = rules.get(0); // Use first consent rule as template
             rule.setUserId(athleteId); // Override with test athlete ID
+
+            // Extract first consented purpose dynamically
+            if (rule.getDimensions().getPurpose() != null
+                    && rule.getDimensions().getPurpose().getValues() != null
+                    && !rule.getDimensions().getPurpose().getValues().isEmpty()) {
+                testPurpose = rule.getDimensions().getPurpose().getValues().get(0).getValue();
+            } else {
+                throw new IllegalStateException("Consent rule must have at least one purpose");
+            }
+
             redisTemplate.opsForValue().set(consentKey, objectMapper.writeValueAsString(rule));
         }
+
+        System.out.println("\n📋 Testing revocation cycle for purpose: " + testPurpose);
 
         // 2. INGEST DATA FROM JSON
         List<Map<String, Object>> dataRows;
@@ -77,39 +91,44 @@ public class DataFlowRevocationTestcontainersTest extends BaseTestcontainersTest
             });
         }
 
+        System.out.println("📤 Ingesting " + dataRows.size() + " records...\n");
+
         for (Map<String, Object> row : dataRows) {
             row.put("athlete_id", athleteId);
             restTemplate.postForEntity("/api/ingest", row, Map.class);
         }
 
         // 3. VERIFY DATA IN ACTIVE ZONE (Wait for processing)
+        String finalTestPurpose = testPurpose; // For lambda
         Awaitility.await().atMost(60, TimeUnit.SECONDS).until(() -> {
             Iterable<Result<Item>> items = minioClient.listObjects(ListObjectsArgs.builder()
                     .bucket("gold").prefix("active/").recursive(true).build());
             for (Result<Item> item : items) {
-                if (item.get().objectName().contains("purpose/research") && item.get().objectName().contains(athleteId))
+                if (item.get().objectName().contains("purpose/" + finalTestPurpose)
+                        && item.get().objectName().contains(athleteId))
                     return true;
             }
             return false;
         });
 
-        System.out.println("STEP 1: Data found in Active Zone.");
+        System.out.println("✅ STEP 1: Data found in Active Zone for purpose '" + testPurpose + "'");
 
-        // 4. REVOKE CONSENT FOR RESEARCH
+        // 4. REVOKE CONSENT FOR THE TEST PURPOSE
         rule.setStatus("INACTIVE");
         redisTemplate.opsForValue().set(consentKey, objectMapper.writeValueAsString(rule));
 
         ConsentChangedEvent revokeEvent = new ConsentChangedEvent(ConsentChangedEvent.Type.REVOKED, athleteId,
-                "research");
+                testPurpose);
         kafkaTemplate.send(KafkaConfig.CONSENT_EVENTS, revokeEvent);
 
         // 5. VERIFY DATA MOVED TO HISTORY
         Awaitility.await().atMost(60, TimeUnit.SECONDS).until(() -> {
-            // Check Active is Empty for research
+            // Check Active is Empty for test purpose
             Iterable<Result<Item>> activeItems = minioClient.listObjects(ListObjectsArgs.builder()
                     .bucket("gold").prefix("active/").recursive(true).build());
             for (Result<Item> item : activeItems) {
-                if (item.get().objectName().contains("purpose/research") && item.get().objectName().contains(athleteId))
+                if (item.get().objectName().contains("purpose/" + finalTestPurpose)
+                        && item.get().objectName().contains(athleteId))
                     return false;
             }
 
@@ -117,20 +136,21 @@ public class DataFlowRevocationTestcontainersTest extends BaseTestcontainersTest
             Iterable<Result<Item>> historyItems = minioClient.listObjects(ListObjectsArgs.builder()
                     .bucket("gold").prefix("history/").recursive(true).build());
             for (Result<Item> item : historyItems) {
-                if (item.get().objectName().contains("purpose/research") && item.get().objectName().contains(athleteId))
+                if (item.get().objectName().contains("purpose/" + finalTestPurpose)
+                        && item.get().objectName().contains(athleteId))
                     return true;
             }
             return false;
         });
 
-        System.out.println("STEP 2: Data moved to History Zone.");
+        System.out.println("✅ STEP 2: Data moved to History Zone for purpose '" + testPurpose + "'");
 
         // 6. RE-GRANT CONSENT (Replay from Silver)
         rule.setStatus("ACTIVE");
         redisTemplate.opsForValue().set(consentKey, objectMapper.writeValueAsString(rule));
 
         ConsentChangedEvent grantEvent = new ConsentChangedEvent(ConsentChangedEvent.Type.GRANTED, athleteId,
-                "research");
+                testPurpose);
         kafkaTemplate.send(KafkaConfig.CONSENT_EVENTS, grantEvent);
 
         // 7. VERIFY DATA REPLAYED BACK TO ACTIVE
@@ -138,12 +158,14 @@ public class DataFlowRevocationTestcontainersTest extends BaseTestcontainersTest
             Iterable<Result<Item>> items = minioClient.listObjects(ListObjectsArgs.builder()
                     .bucket("gold").prefix("active/").recursive(true).build());
             for (Result<Item> item : items) {
-                if (item.get().objectName().contains("purpose/research") && item.get().objectName().contains(athleteId))
+                if (item.get().objectName().contains("purpose/" + finalTestPurpose)
+                        && item.get().objectName().contains(athleteId))
                     return true;
             }
             return false;
         });
 
-        System.out.println("STEP 3: Data replayed back to Active Zone.");
+        System.out.println("✅ STEP 3: Data replayed back to Active Zone for purpose '" + testPurpose + "'");
+        System.out.println("\n🎯 Revocation cycle test complete!");
     }
 }

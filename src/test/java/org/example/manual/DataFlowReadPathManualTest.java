@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -125,8 +128,18 @@ public class DataFlowReadPathManualTest {
 
         // 4. VERIFY: Access Control - DYNAMIC VERIFICATION
 
+        // Create output directory for manual inspection
+        Path outputDir = Paths.get("target/test-output");
+        Files.createDirectories(outputDir);
+
+        // Consolidated response for athlete (all consented data)
+        Map<String, Object> athleteConsentedData = new java.util.LinkedHashMap<>();
+        athleteConsentedData.put("athleteId", athleteId);
+        athleteConsentedData.put("consentedPurposes", consentedPurposes);
+        Map<String, List<org.example.query.model.DataItem>> dataByPurpose = new java.util.LinkedHashMap<>();
+
         // CASE A: Verify ALL Consented Purposes -> Should Return Data
-        System.out.println("🔍 VERIFYING CONSENTED PURPOSES:");
+        System.out.println("\n🔍 VERIFYING CONSENTED PURPOSES:");
         System.out.println("-".repeat(80));
         for (String purpose : consentedPurposes) {
             ResponseEntity<GoldDataResponse> response = restTemplate.getForEntity(
@@ -156,10 +169,28 @@ public class DataFlowReadPathManualTest {
                 assertFalse(item.getContent().isEmpty(), "Content for purpose '" + purpose + "' should not be empty");
             }
 
+            // Collect data for consolidated output
+            dataByPurpose.put(purpose, data);
+
             System.out.println("  ✅ Purpose '" + purpose + "': Verified " + data.size() + " records");
         }
 
+        // Save consolidated consented data for athlete
+        athleteConsentedData.put("dataByPurpose", dataByPurpose);
+        athleteConsentedData.put("totalRecords", dataByPurpose.values().stream().mapToInt(List::size).sum());
+
+        String consentedFilename = String.format("manual_athlete_%s_consented_data.json", athleteId.substring(0, 8));
+        Path consentedFile = outputDir.resolve(consentedFilename);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(consentedFile.toFile(), athleteConsentedData);
+
+        System.out.println("\n📄 Consolidated consented data saved to: " + consentedFile);
+
         // CASE B: Verify ALL Unconsented Purposes -> Should Return EMPTY Data
+        Map<String, Object> athleteUnconsentedData = new java.util.LinkedHashMap<>();
+        athleteUnconsentedData.put("athleteId", athleteId);
+        athleteUnconsentedData.put("unconsentedPurposes", unconsentedPurposes);
+        Map<String, List<org.example.query.model.DataItem>> unconsentedResults = new java.util.LinkedHashMap<>();
+
         System.out.println("\n🔍 VERIFYING UNCONSENTED PURPOSES:");
         System.out.println("-".repeat(80));
         for (String purpose : unconsentedPurposes) {
@@ -173,13 +204,26 @@ public class DataFlowReadPathManualTest {
             assertTrue(response.getBody().getData().isEmpty(),
                     "Unconsented purpose '" + purpose + "' should have NO data");
 
+            unconsentedResults.put(purpose, response.getBody().getData());
             System.out.println("  ✅ Purpose '" + purpose + "': Correctly returns NO data");
         }
+
+        // Save unconsented verification results
+        athleteUnconsentedData.put("results", unconsentedResults);
+        athleteUnconsentedData.put("verification", "All unconsented purposes correctly return empty data");
+
+        String unconsentedFilename = String.format("manual_athlete_%s_unconsented_verification.json",
+                athleteId.substring(0, 8));
+        Path unconsentedFile = outputDir.resolve(unconsentedFilename);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(unconsentedFile.toFile(), athleteUnconsentedData);
+
+        System.out.println("📄 Unconsented verification saved to: " + unconsentedFile);
 
         System.out.println("\n" + "=".repeat(80));
         System.out.println("✅ VERIFICATION COMPLETE: All " + consentedPurposes.size()
                 + " consented purposes return data, all " + unconsentedPurposes.size()
                 + " unconsented purposes return nothing.");
+        System.out.println("📂 All responses saved to: " + outputDir.toAbsolutePath());
         System.out.println("=".repeat(80) + "\n");
     }
 }

@@ -118,6 +118,16 @@ public class DataFlowReadPathTestcontainersTest extends BaseTestcontainersTest {
 
         // 4. VERIFY: Access Control - DYNAMIC VERIFICATION
 
+        // Create output directory for manual inspection
+        java.nio.file.Path outputDir = java.nio.file.Paths.get("target/test-output");
+        java.nio.file.Files.createDirectories(outputDir);
+
+        // Consolidated response for athlete (all consented data)
+        Map<String, Object> athleteConsentedData = new java.util.LinkedHashMap<>();
+        athleteConsentedData.put("athleteId", athleteId);
+        athleteConsentedData.put("consentedPurposes", consentedPurposes);
+        Map<String, List<org.example.query.model.DataItem>> dataByPurpose = new java.util.LinkedHashMap<>();
+
         // CASE A: Verify ALL Consented Purposes -> Should Return Data
         System.out.println("\n🔍 VERIFYING CONSENTED PURPOSES:");
         for (String purpose : consentedPurposes) {
@@ -151,10 +161,28 @@ public class DataFlowReadPathTestcontainersTest extends BaseTestcontainersTest {
                         .isNotEmpty();
             }
 
+            // Collect data for consolidated output
+            dataByPurpose.put(purpose, data);
+
             System.out.println("  ✅ Purpose '" + purpose + "': Verified " + data.size() + " records");
         }
 
+        // Save consolidated consented data for athlete
+        athleteConsentedData.put("dataByPurpose", dataByPurpose);
+        athleteConsentedData.put("totalRecords", dataByPurpose.values().stream().mapToInt(List::size).sum());
+
+        String consentedFilename = String.format("athlete_%s_consented_data.json", athleteId.substring(0, 8));
+        java.nio.file.Path consentedFile = outputDir.resolve(consentedFilename);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(consentedFile.toFile(), athleteConsentedData);
+
+        System.out.println("\n📄 Consolidated consented data saved to: " + consentedFile);
+
         // CASE B: Verify ALL Unconsented Purposes -> Should Return EMPTY Data
+        Map<String, Object> athleteUnconsentedData = new java.util.LinkedHashMap<>();
+        athleteUnconsentedData.put("athleteId", athleteId);
+        athleteUnconsentedData.put("unconsentedPurposes", unconsentedPurposes);
+        Map<String, List<org.example.query.model.DataItem>> unconsentedResults = new java.util.LinkedHashMap<>();
+
         System.out.println("\n🔍 VERIFYING UNCONSENTED PURPOSES:");
         for (String purpose : unconsentedPurposes) {
             ResponseEntity<GoldDataResponse> response = restTemplate.getForEntity(
@@ -168,11 +196,24 @@ public class DataFlowReadPathTestcontainersTest extends BaseTestcontainersTest {
                     .as("Unconsented purpose '%s' should have NO data", purpose)
                     .isEmpty();
 
+            unconsentedResults.put(purpose, response.getBody().getData());
             System.out.println("  ✅ Purpose '" + purpose + "': Correctly returns NO data");
         }
+
+        // Save unconsented verification results
+        athleteUnconsentedData.put("results", unconsentedResults);
+        athleteUnconsentedData.put("verification", "All unconsented purposes correctly return empty data");
+
+        String unconsentedFilename = String.format("athlete_%s_unconsented_verification.json",
+                athleteId.substring(0, 8));
+        java.nio.file.Path unconsentedFile = outputDir.resolve(unconsentedFilename);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(unconsentedFile.toFile(), athleteUnconsentedData);
+
+        System.out.println("📄 Unconsented verification saved to: " + unconsentedFile);
 
         System.out.println("\n✅ VERIFICATION COMPLETE: All " + consentedPurposes.size()
                 + " consented purposes return data, all " + unconsentedPurposes.size()
                 + " unconsented purposes return nothing.");
+        System.out.println("📂 All responses saved to: " + outputDir.toAbsolutePath());
     }
 }
