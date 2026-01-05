@@ -40,6 +40,9 @@ public class DataFlowKafkaTestcontainersTest extends BaseTestcontainersTest {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Autowired
+    private org.example.processing.service.GoldService goldService;
+
     @Test
     public void testFullKafkaFlow_Testcontainers() throws Exception {
         String athleteId = "athlete-tc-" + UUID.randomUUID().toString().substring(0, 8);
@@ -110,20 +113,8 @@ public class DataFlowKafkaTestcontainersTest extends BaseTestcontainersTest {
     }
 
     private boolean checkGoldPathExists(String purpose, String athleteId) throws Exception {
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket("gold").build())) {
-            return false;
-        }
-
-        Iterable<Result<Item>> results = minioClient.listObjects(
-                ListObjectsArgs.builder().bucket("gold").recursive(true).build());
-
-        for (Result<Item> result : results) {
-            String name = result.get().objectName();
-            if (name.contains("purpose/" + purpose) && name.contains("athlete_id=" + athleteId)) {
-                return true;
-            }
-        }
-        return false;
+        // Use strategy-aware verification
+        return goldService.verifyDataExists(athleteId, purpose);
     }
 
     private boolean checkBucketPathExists(String bucket, String athleteId) throws Exception {
