@@ -2,8 +2,6 @@ package org.example.consent.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.consent.model.ComplexConsentRule;
-import org.example.consent.model.ConsentRule;
-import org.example.consent.service.ConsentService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,19 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/consent")
 public class ConsentController {
 
-    private final ConsentService consentService;
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
 
-    public ConsentController(ConsentService consentService, StringRedisTemplate redisTemplate, ObjectMapper objectMapper) {
-        this.consentService = consentService;
+    public ConsentController(StringRedisTemplate redisTemplate, ObjectMapper objectMapper) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper;
-    }
-
-    @PostMapping
-    public ConsentRule createRule(@RequestBody ConsentRule rule) {
-        return consentService.saveRule(rule);
     }
 
     @PostMapping("/complex")
@@ -31,10 +22,5 @@ public class ConsentController {
         String json = objectMapper.writeValueAsString(rule);
         redisTemplate.opsForValue().set("consent:rule:" + rule.getUserId(), json);
         return "SAVED";
-    }
-
-    @DeleteMapping("/{athleteId}")
-    public void revokeConsent(@PathVariable String athleteId) {
-        consentService.revokeConsent(athleteId);
     }
 }
