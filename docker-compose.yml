@@ -14,6 +14,36 @@ services:
     volumes:
       - minio_data:/data
 
+  iceberg-rest:
+    image: tabulario/iceberg-rest
+    container_name: iceberg-rest
+    ports:
+      - "8181:8181"
+    environment:
+      - CATALOG_WAREHOUSE=s3://gold-warehouse/
+      - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
+      - CATALOG_S3_ENDPOINT=http://minio:9000
+      - CATALOG_S3_ACCESS__KEY__ID=admin
+      - CATALOG_S3_SECRET__ACCESS__KEY=password
+      - CATALOG_S3_PATH__STYLE__ACCESS=true
+      - JDBC_USER=admin
+      - JDBC_PASSWORD=password
+      - JDBC_DB=iceberg
+      - AWS_REGION=us-east-1
+    depends_on:
+      - db-catalog
+      - minio
+
+  db-catalog:
+    image: postgres:15-alpine
+    container_name: db-catalog
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=iceberg
+    ports:
+      - "5432:5432"
+
   redis:
     image: redis:alpine
     container_name: redis

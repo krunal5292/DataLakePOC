@@ -5,6 +5,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -13,23 +14,32 @@ import org.testcontainers.utility.DockerImageName;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseTestcontainersTest {
 
+    static final Network NETWORK = Network.newNetwork();
+
     static final KafkaContainer kafka;
     static final GenericContainer<?> redis;
     static final GenericContainer<?> minio;
 
     static {
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
+        System.setProperty("aws.region", "us-east-1");
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"))
+                .withNetwork(NETWORK)
+                .withNetworkAliases("kafka");
         kafka.start();
 
         redis = new GenericContainer<>(DockerImageName.parse("redis:alpine"))
-                .withExposedPorts(6379);
+                .withExposedPorts(6379)
+                .withNetwork(NETWORK)
+                .withNetworkAliases("redis");
         redis.start();
 
         minio = new GenericContainer<>(DockerImageName.parse("minio/minio"))
-                .withExposedPorts(9000)
+                .withExposedPorts(9000, 9001)
                 .withEnv("MINIO_ROOT_USER", "admin")
                 .withEnv("MINIO_ROOT_PASSWORD", "password")
-                .withCommand("server /data")
+                .withCommand("server /data --console-address :9001")
+                .withNetwork(NETWORK)
+                .withNetworkAliases("minio")
                 .waitingFor(Wait.forHttp("/minio/health/live").forPort(9000));
         minio.start();
     }

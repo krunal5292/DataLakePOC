@@ -1,2 +1,791 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< org.example:DataLakePOC >-----------------------
+[INFO] Building DataLakePOC 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 2 problems were encountered while building the effective model for org.apache.yetus:audience-annotations:jar:0.5.0 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DataLakePOC ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DataLakePOC ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DataLakePOC ---
+[INFO] Copying 2 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DataLakePOC ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ DataLakePOC ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Jan 05, 2026 7:35:01 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 05, 2026 7:35:01 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Jan 05, 2026 7:35:02 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 3 'junit-platform.properties' configuration files on the classpath (see below); only the first (*) will be used.
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-clients/3.8.1/kafka-clients-3.8.1-test.jar!/junit-platform.properties (*)
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka-server-common/3.8.1/kafka-server-common-3.8.1-test.jar!/junit-platform.properties
+- jar:file:/Users/krunal/.m2/repository/org/apache/kafka/kafka_2.13/3.8.1/kafka_2.13-3.8.1-test.jar!/junit-platform.properties
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+SLF4J(W): Class path contains multiple SLF4J providers.
+SLF4J(W): Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@515c6049]
+SLF4J(W): Found provider [org.slf4j.reload4j.Reload4jServiceProvider@639c2c1d]
+SLF4J(W): See https://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J(I): Actual provider is of type [ch.qos.logback.classic.spi.LogbackServiceProvider@515c6049]
+[INFO] Running org.example.integration.IcebergStrategyIntegrationTest
+19:35:02.537 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [org.example.integration.IcebergStrategyIntegrationTest]: IcebergStrategyIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:35:02.718 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration org.example.DataLakeApplication for test class org.example.integration.IcebergStrategyIntegrationTest
+19:35:02.879 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+19:35:02.882 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+19:35:02.890 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 1.21.4
+19:35:03.439 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Environment variables, system properties and defaults. Resolved dockerHost=unix:///Users/krunal/.docker/run/docker.sock
+19:35:03.440 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+19:35:03.463 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.1.3
+  API Version: 1.52
+  Operating System: Docker Desktop
+  Total Memory: 7836 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/krunal/Library/Containers/com.docker.docker/Data/docker-cli.sock
+19:35:03.622 [main] INFO tc.testcontainers/ryuk:0.12.0 -- Creating container for image: testcontainers/ryuk:0.12.0
+19:35:03.837 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+19:35:03.990 [main] INFO tc.testcontainers/ryuk:0.12.0 -- Container testcontainers/ryuk:0.12.0 is starting: d7c080eb73d88ee806ac728d49f9d6cf8f8524dd4a1e36f94e4e7874f15e0a6b
+19:35:04.404 [main] INFO tc.testcontainers/ryuk:0.12.0 -- Container testcontainers/ryuk:0.12.0 started in PT0.781921S
+19:35:04.414 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+19:35:04.414 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+19:35:04.415 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+19:35:04.415 [main] INFO tc.confluentinc/cp-kafka:7.5.0 -- Creating container for image: confluentinc/cp-kafka:7.5.0
+19:35:04.557 [main] INFO tc.confluentinc/cp-kafka:7.5.0 -- Container confluentinc/cp-kafka:7.5.0 is starting: f479afeb7a2f64907e01f06ddbd6aa3f142588674722b4c236b2971e46bf0fa4
+19:35:10.360 [main] INFO tc.confluentinc/cp-kafka:7.5.0 -- Container confluentinc/cp-kafka:7.5.0 started in PT5.944231S
+19:35:10.361 [main] INFO tc.redis:alpine -- Creating container for image: redis:alpine
+19:35:10.488 [main] INFO tc.redis:alpine -- Container redis:alpine is starting: 3452edd76e7971a1362f9253a193c1ad2d55191f22607a2357f9e4e8c046a6fc
+19:35:11.006 [main] INFO tc.redis:alpine -- Container redis:alpine started in PT0.645343S
+19:35:11.049 [main] INFO tc.minio/minio:latest -- Creating container for image: minio/minio:latest
+19:35:11.110 [main] INFO tc.minio/minio:latest -- Container minio/minio:latest is starting: c1972308041e51ff9cc2c148c602b5f2b591e981e859b99432ee5f1f670268a2
+19:35:11.424 [main] INFO org.testcontainers.containers.wait.strategy.HttpWaitStrategy -- /heuristic_mendeleev: Waiting for 60 seconds for URL: http://localhost:58461/minio/health/live (where port 58461 maps to container port 9000)
+19:35:12.445 [main] INFO tc.minio/minio:latest -- Container minio/minio:latest started in PT1.396037S
+19:35:12.447 [main] INFO tc.postgres:15-alpine -- Creating container for image: postgres:15-alpine
+19:35:12.531 [main] INFO tc.postgres:15-alpine -- Container postgres:15-alpine is starting: 48c443b77d3eebf846fd02e66495313621c3318953a1989e21f389b90cdd9748
+19:35:14.590 [main] INFO tc.postgres:15-alpine -- Container postgres:15-alpine started in PT2.143232S
+19:35:14.625 [main] INFO tc.tabulario/iceberg-rest:latest -- Creating container for image: tabulario/iceberg-rest:latest
+19:35:14.685 [main] INFO tc.tabulario/iceberg-rest:latest -- Container tabulario/iceberg-rest:latest is starting: a5df13eac56e5f98ecec30893cb0da1065849dff0a8a9a035da03ef94e72adfb
+19:35:15.875 [main] INFO tc.tabulario/iceberg-rest:latest -- Container tabulario/iceberg-rest:latest started in PT1.249837S
 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
 
+ :: Spring Boot ::                (v3.4.0)
+
+2026-01-05T19:35:16.189+05:30  INFO --- [           main] o.e.i.IcebergStrategyIntegrationTest     : Starting IcebergStrategyIntegrationTest using Java 25.0.1 with PID 18331 (started by krunal in /Users/krunal/REPO/DataLakePOC)
+2026-01-05T19:35:16.190+05:30  INFO --- [           main] o.e.i.IcebergStrategyIntegrationTest     : No active profile set, falling back to 1 default profile: "default"
+2026-01-05T19:35:17.031+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-05T19:35:17.033+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-05T19:35:17.065+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 0 JPA repository interfaces.
+2026-01-05T19:35:17.085+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-05T19:35:17.087+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-05T19:35:17.102+05:30  INFO --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2026-01-05T19:35:17.684+05:30  INFO --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-05T19:35:17.942+05:30  INFO --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-05T19:35:17.943+05:30  INFO --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-05T19:35:18.004+05:30  INFO --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-05T19:35:18.066+05:30  INFO --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2026-01-05T19:35:18.104+05:30  INFO --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-05T19:35:18.387+05:30  INFO --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-05T19:35:18.437+05:30  WARN --- [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-05T19:35:18.452+05:30  INFO --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-05T19:35:19.633+05:30  INFO --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-05T19:35:19.683+05:30  INFO --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/Users/krunal/.m2/repository/io/netty/netty-common/4.1.115.Final/netty-common-4.1.115.Final.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
+WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
+Initializing Iceberg Strategy...
+Created warehouse bucket: gold-warehouse
+2026-01-05T19:35:20.726+05:30  WARN --- [           main] PropertyNamingStrategy$KebabCaseStrategy : PropertyNamingStrategy.KebabCaseStrategy is used but it has been deprecated due to risk of deadlock. Consider using PropertyNamingStrategies.KebabCaseStrategy instead. See https://github.com/FasterXML/jackson-databind/issues/2715 for more details.
+2026-01-05T19:35:21.095+05:30  INFO --- [           main] org.apache.iceberg.CatalogUtil           : Loading custom FileIO implementation: org.apache.iceberg.aws.s3.S3FileIO
+Creating Iceberg table: gold.telemetry
+🎯 Gold Service initialized with strategy: iceberg
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (file:/Users/krunal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.33/tomcat-embed-core-10.1.33.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-01-05T19:35:22.457+05:30  WARN --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-05T19:35:22.839+05:30  INFO --- [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-01-05T19:35:23.027+05:30  INFO --- [           main] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.controllers = []
+	bootstrap.servers = [PLAINTEXT://localhost:58448]
+	client.dns.lookup = use_all_dns_ips
+	client.id = DataLakePOC-admin-0
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	enable.metrics.push = true
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2026-01-05T19:35:23.163+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-05T19:35:23.163+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-05T19:35:23.163+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767621923161
+2026-01-05T19:35:23.525+05:30  WARN --- [LakePOC-admin-0] o.a.k.clients.admin.KafkaAdminClient     : [AdminClient clientId=DataLakePOC-admin-0] The DescribeTopicPartitions API is not supported, using Metadata API to describe topics.
+2026-01-05T19:35:23.985+05:30  INFO --- [LakePOC-admin-0] o.a.kafka.common.utils.AppInfoParser     : App info kafka.admin.client for DataLakePOC-admin-0 unregistered
+2026-01-05T19:35:23.990+05:30  INFO --- [LakePOC-admin-0] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-01-05T19:35:23.991+05:30  INFO --- [LakePOC-admin-0] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-01-05T19:35:23.991+05:30  INFO --- [LakePOC-admin-0] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-01-05T19:35:24.023+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:58448]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-gold-group-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = gold-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-05T19:35:24.069+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-05T19:35:24.111+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-05T19:35:24.112+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-05T19:35:24.112+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767621924111
+2026-01-05T19:35:24.114+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Subscribed to topic(s): telemetry-silver-saved
+2026-01-05T19:35:24.123+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:58448]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-silver-group-2
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = silver-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-05T19:35:24.123+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-05T19:35:24.130+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-05T19:35:24.130+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-05T19:35:24.130+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767621924130
+2026-01-05T19:35:24.131+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Subscribed to topic(s): telemetry-bronze-saved
+2026-01-05T19:35:24.132+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:58448]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-bronze-group-3
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = bronze-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-05T19:35:24.133+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-05T19:35:24.140+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-05T19:35:24.140+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-05T19:35:24.140+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767621924140
+2026-01-05T19:35:24.141+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Subscribed to topic(s): telemetry-ingest
+2026-01-05T19:35:24.142+05:30  INFO --- [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [PLAINTEXT://localhost:58448]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-gold-index-manager-4
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = gold-index-manager
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-01-05T19:35:24.143+05:30  INFO --- [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-01-05T19:35:24.148+05:30  INFO --- [ntainer#2-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Cluster ID: iTZTsRZbSPq3RmqRt5Q81w
+2026-01-05T19:35:24.148+05:30  INFO --- [ntainer#3-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Cluster ID: iTZTsRZbSPq3RmqRt5Q81w
+2026-01-05T19:35:24.152+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.8.1
+2026-01-05T19:35:24.152+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 70d6ff42debf7e17
+2026-01-05T19:35:24.153+05:30  INFO --- [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1767621924152
+2026-01-05T19:35:24.153+05:30  INFO --- [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Subscribed to topic(s): consent-events
+2026-01-05T19:35:24.153+05:30  INFO --- [ntainer#0-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Cluster ID: iTZTsRZbSPq3RmqRt5Q81w
+2026-01-05T19:35:24.166+05:30  INFO --- [ntainer#1-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Cluster ID: iTZTsRZbSPq3RmqRt5Q81w
+2026-01-05T19:35:24.170+05:30  INFO --- [           main] o.e.i.IcebergStrategyIntegrationTest     : Started IcebergStrategyIntegrationTest in 8.239 seconds (process running for 22.741)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+2026-01-05T19:35:24.276+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Discovered group coordinator localhost:58448 (id: 2147483646 rack: null)
+2026-01-05T19:35:24.277+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Discovered group coordinator localhost:58448 (id: 2147483646 rack: null)
+2026-01-05T19:35:24.280+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] (Re-)joining group
+2026-01-05T19:35:24.283+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] (Re-)joining group
+2026-01-05T19:35:24.284+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Discovered group coordinator localhost:58448 (id: 2147483646 rack: null)
+2026-01-05T19:35:24.285+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] (Re-)joining group
+2026-01-05T19:35:24.290+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Discovered group coordinator localhost:58448 (id: 2147483646 rack: null)
+2026-01-05T19:35:24.291+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] (Re-)joining group
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Request joining group due to: need to re-join with the given member-id: consumer-silver-group-2-090c7dde-70a3-4667-8350-253032b8fb8f
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Request joining group due to: need to re-join with the given member-id: consumer-gold-group-1-89dfbeaf-03f9-495b-96b7-f0dda8255012
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Request joining group due to: need to re-join with the given member-id: consumer-bronze-group-3-f0c44501-3728-4260-812c-deab6f5f7e50
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Request joining group due to: need to re-join with the given member-id: consumer-gold-index-manager-4-1451621c-6191-43ca-ae24-7e73995b8e2d
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] (Re-)joining group
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] (Re-)joining group
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] (Re-)joining group
+2026-01-05T19:35:24.343+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] (Re-)joining group
+2026-01-05T19:35:24.390+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-bronze-group-3-f0c44501-3728-4260-812c-deab6f5f7e50', protocol='range'}
+2026-01-05T19:35:24.402+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-silver-group-2-090c7dde-70a3-4667-8350-253032b8fb8f', protocol='range'}
+2026-01-05T19:35:24.403+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Finished assignment for group at generation 1: {consumer-bronze-group-3-f0c44501-3728-4260-812c-deab6f5f7e50=Assignment(partitions=[telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2])}
+2026-01-05T19:35:24.403+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Finished assignment for group at generation 1: {consumer-silver-group-2-090c7dde-70a3-4667-8350-253032b8fb8f=Assignment(partitions=[telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2])}
+2026-01-05T19:35:24.411+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-gold-group-1-89dfbeaf-03f9-495b-96b7-f0dda8255012', protocol='range'}
+2026-01-05T19:35:24.411+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Finished assignment for group at generation 1: {consumer-gold-group-1-89dfbeaf-03f9-495b-96b7-f0dda8255012=Assignment(partitions=[telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2])}
+2026-01-05T19:35:24.424+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Successfully joined group with generation Generation{generationId=1, memberId='consumer-gold-index-manager-4-1451621c-6191-43ca-ae24-7e73995b8e2d', protocol='range'}
+2026-01-05T19:35:24.424+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Finished assignment for group at generation 1: {consumer-gold-index-manager-4-1451621c-6191-43ca-ae24-7e73995b8e2d=Assignment(partitions=[consent-events-0])}
+2026-01-05T19:35:24.548+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-gold-group-1-89dfbeaf-03f9-495b-96b7-f0dda8255012', protocol='range'}
+2026-01-05T19:35:24.550+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-bronze-group-3-f0c44501-3728-4260-812c-deab6f5f7e50', protocol='range'}
+2026-01-05T19:35:24.550+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Notifying assignor about the new Assignment(partitions=[telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2])
+2026-01-05T19:35:24.550+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-silver-group-2-090c7dde-70a3-4667-8350-253032b8fb8f', protocol='range'}
+2026-01-05T19:35:24.550+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Notifying assignor about the new Assignment(partitions=[telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2])
+2026-01-05T19:35:24.551+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Notifying assignor about the new Assignment(partitions=[telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2])
+2026-01-05T19:35:24.551+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Successfully synced group in generation Generation{generationId=1, memberId='consumer-gold-index-manager-4-1451621c-6191-43ca-ae24-7e73995b8e2d', protocol='range'}
+2026-01-05T19:35:24.551+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Notifying assignor about the new Assignment(partitions=[consent-events-0])
+2026-01-05T19:35:24.554+05:30  INFO --- [ntainer#2-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Adding newly assigned partitions: telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2
+2026-01-05T19:35:24.554+05:30  INFO --- [ntainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Adding newly assigned partitions: telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2
+2026-01-05T19:35:24.554+05:30  INFO --- [ntainer#3-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Adding newly assigned partitions: telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2
+2026-01-05T19:35:24.554+05:30  INFO --- [ntainer#1-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Adding newly assigned partitions: consent-events-0
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Found no committed offset for partition consent-events-0
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Found no committed offset for partition telemetry-silver-saved-0
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Found no committed offset for partition telemetry-silver-saved-1
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Found no committed offset for partition telemetry-bronze-saved-2
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Found no committed offset for partition telemetry-ingest-1
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Found no committed offset for partition telemetry-silver-saved-2
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Found no committed offset for partition telemetry-bronze-saved-1
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Found no committed offset for partition telemetry-ingest-0
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Found no committed offset for partition telemetry-bronze-saved-0
+2026-01-05T19:35:24.586+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Found no committed offset for partition telemetry-ingest-2
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2026-01-05T19:35:24.622+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Resetting offset for partition telemetry-silver-saved-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.622+05:30  INFO --- [ntainer#1-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-index-manager-4, groupId=gold-index-manager] Resetting offset for partition consent-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.623+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Resetting offset for partition telemetry-silver-saved-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.623+05:30  INFO --- [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-gold-group-1, groupId=gold-group] Resetting offset for partition telemetry-silver-saved-2 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.623+05:30  INFO --- [ntainer#1-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : gold-index-manager: partitions assigned: [consent-events-0]
+2026-01-05T19:35:24.624+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Resetting offset for partition telemetry-ingest-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.624+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Resetting offset for partition telemetry-ingest-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.625+05:30  INFO --- [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-bronze-group-3, groupId=bronze-group] Resetting offset for partition telemetry-ingest-2 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.625+05:30  INFO --- [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : bronze-group: partitions assigned: [telemetry-ingest-0, telemetry-ingest-1, telemetry-ingest-2]
+2026-01-05T19:35:24.625+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Resetting offset for partition telemetry-bronze-saved-2 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.625+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Resetting offset for partition telemetry-bronze-saved-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.623+05:30  INFO --- [ntainer#2-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : gold-group: partitions assigned: [telemetry-silver-saved-0, telemetry-silver-saved-1, telemetry-silver-saved-2]
+2026-01-05T19:35:24.625+05:30  INFO --- [ntainer#3-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-silver-group-2, groupId=silver-group] Resetting offset for partition telemetry-bronze-saved-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:58448 (id: 1 rack: null)], epoch=0}}.
+2026-01-05T19:35:24.626+05:30  INFO --- [ntainer#3-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : silver-group: partitions assigned: [telemetry-bronze-saved-0, telemetry-bronze-saved-1, telemetry-bronze-saved-2]
+WARNING: A Java agent has been loaded dynamically (/Users/krunal/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.10/byte-buddy-agent-1.15.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Reading MinIO: silver/data.json
+Enriched Data: {event_id=training_session_1, activity_type=running, hr=140}
+Redis Key: consent:rule:athlete1, Value: {"ruleId":null,"userId":"athlete1","status":"ACTIVE","dimensions":{"purpose":{"type":"specific","values":[{"id":"1","value":"research","title":"Research"},{"id":"2","value":"marketing","title":"Marketing"}],"specifications":null},"activity":null,"events":{"type":"any","values":null,"specifications":null},"fields":null}}
+Fanning out for purposes: 2
+Writing record for purpose: research
+2026-01-05T19:35:25.887+05:30  INFO --- [           main] o.apache.hadoop.io.compress.CodecPool    : Got brand-new compressor [.zstd]
+2026-01-05T19:35:30.172+05:30  INFO --- [           main] org.apache.iceberg.SnapshotProducer      : Committed snapshot 8162515607430528175 (MergeAppend)
+2026-01-05T19:35:30.311+05:30  INFO --- [           main] o.a.i.metrics.LoggingMetricsReporter     : Received metrics report: CommitReport{tableName=demo.gold.telemetry, snapshotId=8162515607430528175, sequenceNumber=1, operation=append, commitMetrics=CommitMetricsResult{totalDuration=TimerResult{timeUnit=NANOSECONDS, totalDuration=PT0.625370445S, count=1}, attempts=CounterResult{unit=COUNT, value=1}, addedDataFiles=CounterResult{unit=COUNT, value=1}, removedDataFiles=null, totalDataFiles=CounterResult{unit=COUNT, value=1}, addedDeleteFiles=null, addedEqualityDeleteFiles=null, addedPositionalDeleteFiles=null, removedDeleteFiles=null, removedEqualityDeleteFiles=null, removedPositionalDeleteFiles=null, totalDeleteFiles=CounterResult{unit=COUNT, value=0}, addedRecords=CounterResult{unit=COUNT, value=1}, removedRecords=null, totalRecords=CounterResult{unit=COUNT, value=1}, addedFilesSizeInBytes=CounterResult{unit=BYTES, value=2767}, removedFilesSizeInBytes=null, totalFilesSizeInBytes=CounterResult{unit=BYTES, value=2767}, addedPositionalDeletes=null, removedPositionalDeletes=null, totalPositionalDeletes=CounterResult{unit=COUNT, value=0}, addedEqualityDeletes=null, removedEqualityDeletes=null, totalEqualityDeletes=CounterResult{unit=COUNT, value=0}}, metadata={iceberg-version=Apache Iceberg 1.5.0 (commit 2519ab43d654927802cc02e19c917ce90e8e0265)}}
+Committed Iceberg file: s3://gold-warehouse/gold/telemetry/data/research/running/e2cc0ea7-5f35-4abb-8245-783124b218d8.parquet
+Writing record for purpose: marketing
+2026-01-05T19:35:30.340+05:30  INFO --- [           main] o.apache.hadoop.io.compress.CodecPool    : Got brand-new compressor [.zstd]
+2026-01-05T19:35:30.478+05:30  INFO --- [           main] org.apache.iceberg.SnapshotProducer      : Committed snapshot 7532085134445861163 (MergeAppend)
+2026-01-05T19:35:30.521+05:30  INFO --- [           main] o.a.i.metrics.LoggingMetricsReporter     : Received metrics report: CommitReport{tableName=demo.gold.telemetry, snapshotId=7532085134445861163, sequenceNumber=2, operation=append, commitMetrics=CommitMetricsResult{totalDuration=TimerResult{timeUnit=NANOSECONDS, totalDuration=PT0.14942462S, count=1}, attempts=CounterResult{unit=COUNT, value=1}, addedDataFiles=CounterResult{unit=COUNT, value=1}, removedDataFiles=null, totalDataFiles=CounterResult{unit=COUNT, value=2}, addedDeleteFiles=null, addedEqualityDeleteFiles=null, addedPositionalDeleteFiles=null, removedDeleteFiles=null, removedEqualityDeleteFiles=null, removedPositionalDeleteFiles=null, totalDeleteFiles=CounterResult{unit=COUNT, value=0}, addedRecords=CounterResult{unit=COUNT, value=1}, removedRecords=null, totalRecords=CounterResult{unit=COUNT, value=2}, addedFilesSizeInBytes=CounterResult{unit=BYTES, value=2774}, removedFilesSizeInBytes=null, totalFilesSizeInBytes=CounterResult{unit=BYTES, value=5541}, addedPositionalDeletes=null, removedPositionalDeletes=null, totalPositionalDeletes=CounterResult{unit=COUNT, value=0}, addedEqualityDeletes=null, removedEqualityDeletes=null, totalEqualityDeletes=CounterResult{unit=COUNT, value=0}}, metadata={iceberg-version=Apache Iceberg 1.5.0 (commit 2519ab43d654927802cc02e19c917ce90e8e0265)}}
+Committed Iceberg file: s3://gold-warehouse/gold/telemetry/data/marketing/running/614a39aa-e1ce-4b06-bba5-6f3cd08462fc.parquet
+2026-01-05T19:35:30.534+05:30  INFO --- [           main] org.apache.iceberg.CatalogUtil           : Loading custom FileIO implementation: org.apache.iceberg.aws.s3.S3FileIO
+2026-01-05T19:35:30.574+05:30  INFO --- [           main] org.apache.iceberg.SnapshotScan          : Scanning table demo.gold.telemetry snapshot 7532085134445861163 created at 2026-01-05T14:05:30.435+00:00 with filter purpose = (hash-522337f9)
+2026-01-05T19:35:30.724+05:30  INFO --- [           main] org.apache.iceberg.CatalogUtil           : Loading custom FileIO implementation: org.apache.iceberg.aws.s3.S3FileIO
+2026-01-05T19:35:30.783+05:30  WARN --- [           main] o.apache.hadoop.util.NativeCodeLoader    : Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2026-01-05T19:35:30.783+05:30  INFO --- [           main] o.apache.hadoop.io.compress.CodecPool    : Got brand-new compressor [.gz]
+2026-01-05T19:35:30.889+05:30  INFO --- [           main] org.apache.iceberg.SnapshotProducer      : Committed snapshot 7570251698260322971 (MergeAppend)
+2026-01-05T19:35:30.922+05:30  INFO --- [           main] o.a.i.metrics.LoggingMetricsReporter     : Received metrics report: CommitReport{tableName=demo.gold.megacorp, snapshotId=7570251698260322971, sequenceNumber=1, operation=append, commitMetrics=CommitMetricsResult{totalDuration=TimerResult{timeUnit=NANOSECONDS, totalDuration=PT0.112148821S, count=1}, attempts=CounterResult{unit=COUNT, value=1}, addedDataFiles=CounterResult{unit=COUNT, value=1}, removedDataFiles=null, totalDataFiles=CounterResult{unit=COUNT, value=1}, addedDeleteFiles=null, addedEqualityDeleteFiles=null, addedPositionalDeleteFiles=null, removedDeleteFiles=null, removedEqualityDeleteFiles=null, removedPositionalDeleteFiles=null, totalDeleteFiles=CounterResult{unit=COUNT, value=0}, addedRecords=CounterResult{unit=COUNT, value=1}, removedRecords=null, totalRecords=CounterResult{unit=COUNT, value=1}, addedFilesSizeInBytes=CounterResult{unit=BYTES, value=964}, removedFilesSizeInBytes=null, totalFilesSizeInBytes=CounterResult{unit=BYTES, value=964}, addedPositionalDeletes=null, removedPositionalDeletes=null, totalPositionalDeletes=CounterResult{unit=COUNT, value=0}, addedEqualityDeletes=null, removedEqualityDeletes=null, totalEqualityDeletes=CounterResult{unit=COUNT, value=0}}, metadata={iceberg-version=Apache Iceberg 1.5.0 (commit 2519ab43d654927802cc02e19c917ce90e8e0265)}}
+2026-01-05T19:35:30.938+05:30  INFO --- [           main] org.apache.iceberg.SnapshotScan          : Scanning table demo.gold.megacorp snapshot 7570251698260322971 created at 2026-01-05T14:05:30.857+00:00 with filter true
+2026-01-05T19:35:31.033+05:30  INFO --- [           main] o.apache.hadoop.io.compress.CodecPool    : Got brand-new decompressor [.gz]
+Reading MinIO: silver/revoke_data.json
+Enriched Data: {activity_type=cycling}
+Redis Key: consent:rule:athlete_revoke, Value: {"ruleId":null,"userId":"athlete_revoke","status":"ACTIVE","dimensions":{"purpose":{"type":"specific","values":[{"id":"1","value":"research","title":"Research"}],"specifications":null},"activity":null,"events":{"type":"any","values":null,"specifications":null},"fields":null}}
+Fanning out for purposes: 1
+Writing record for purpose: research
+2026-01-05T19:35:31.070+05:30  INFO --- [           main] o.apache.hadoop.io.compress.CodecPool    : Got brand-new compressor [.zstd]
+2026-01-05T19:35:31.195+05:30  INFO --- [           main] org.apache.iceberg.SnapshotProducer      : Committed snapshot 405732464925427593 (MergeAppend)
+2026-01-05T19:35:31.227+05:30  INFO --- [           main] o.a.i.metrics.LoggingMetricsReporter     : Received metrics report: CommitReport{tableName=demo.gold.telemetry, snapshotId=405732464925427593, sequenceNumber=3, operation=append, commitMetrics=CommitMetricsResult{totalDuration=TimerResult{timeUnit=NANOSECONDS, totalDuration=PT0.132255504S, count=1}, attempts=CounterResult{unit=COUNT, value=1}, addedDataFiles=CounterResult{unit=COUNT, value=1}, removedDataFiles=null, totalDataFiles=CounterResult{unit=COUNT, value=3}, addedDeleteFiles=null, addedEqualityDeleteFiles=null, addedPositionalDeleteFiles=null, removedDeleteFiles=null, removedEqualityDeleteFiles=null, removedPositionalDeleteFiles=null, totalDeleteFiles=CounterResult{unit=COUNT, value=0}, addedRecords=CounterResult{unit=COUNT, value=1}, removedRecords=null, totalRecords=CounterResult{unit=COUNT, value=3}, addedFilesSizeInBytes=CounterResult{unit=BYTES, value=2452}, removedFilesSizeInBytes=null, totalFilesSizeInBytes=CounterResult{unit=BYTES, value=7993}, addedPositionalDeletes=null, removedPositionalDeletes=null, totalPositionalDeletes=CounterResult{unit=COUNT, value=0}, addedEqualityDeletes=null, removedEqualityDeletes=null, totalEqualityDeletes=CounterResult{unit=COUNT, value=0}}, metadata={iceberg-version=Apache Iceberg 1.5.0 (commit 2519ab43d654927802cc02e19c917ce90e8e0265)}}
+Committed Iceberg file: s3://gold-warehouse/gold/telemetry/data/research/cycling/f673d66c-e40f-45b2-a030-d9b970d2cfb9.parquet
+2026-01-05T19:35:31.243+05:30  INFO --- [           main] org.apache.iceberg.SnapshotScan          : Scanning table demo.gold.telemetry snapshot 405732464925427593 created at 2026-01-05T14:05:31.161+00:00 with filter (athlete_id = (hash-566732f0) AND purpose = (hash-522337f9))
+[ERROR] Tests run: 3, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 28.84 s <<< FAILURE! -- in org.example.integration.IcebergStrategyIntegrationTest
+[ERROR] org.example.integration.IcebergStrategyIntegrationTest.testFanOutCreatesCorrectPartitions -- Time elapsed: 6.518 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expected size: 1 but was: 0 in:
+[]
+	at org.example.integration.IcebergStrategyIntegrationTest.testFanOutCreatesCorrectPartitions(IcebergStrategyIntegrationTest.java:180)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+[ERROR] org.example.integration.IcebergStrategyIntegrationTest.testRevocationRemovesData -- Time elapsed: 0.219 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+Expecting value to be true but was false
+	at org.example.integration.IcebergStrategyIntegrationTest.testRevocationRemovesData(IcebergStrategyIntegrationTest.java:225)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   IcebergStrategyIntegrationTest.testFanOutCreatesCorrectPartitions:180 
+Expected size: 1 but was: 0 in:
+[]
+[ERROR]   IcebergStrategyIntegrationTest.testRevocationRemovesData:225 
+Expecting value to be true but was false
+[INFO] 
+[ERROR] Tests run: 3, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32.841 s
+[INFO] Finished at: 2026-01-05T19:35:31+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project DataLakePOC: There are test failures.
+[ERROR] 
+[ERROR] See /Users/krunal/REPO/DataLakePOC/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
