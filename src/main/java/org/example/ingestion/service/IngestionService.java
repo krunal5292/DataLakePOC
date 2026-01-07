@@ -1,10 +1,10 @@
 package org.example.ingestion.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.ingestion.model.TelemetryMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

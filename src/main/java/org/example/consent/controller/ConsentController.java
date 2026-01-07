@@ -3,7 +3,10 @@ package org.example.consent.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.consent.model.ComplexConsentRule;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/consent")

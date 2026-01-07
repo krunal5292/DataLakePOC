@@ -1,39 +1,33 @@
 package org.example.manual;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.minio.MinioClient;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.iceberg.CatalogUtil;
-import org.apache.iceberg.FileScanTask;
-import org.apache.iceberg.PartitionSpec;
-import org.apache.iceberg.Schema;
-import org.apache.iceberg.Table;
+import org.apache.iceberg.*;
 import org.apache.iceberg.catalog.Catalog;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.iceberg.data.GenericRecord;
-import org.apache.iceberg.data.IcebergGenerics;
 import org.apache.iceberg.data.Record;
 import org.apache.iceberg.data.parquet.GenericParquetWriter;
 import org.apache.iceberg.io.CloseableIterable;
 import org.apache.iceberg.io.OutputFile;
 import org.apache.iceberg.parquet.Parquet;
 import org.apache.iceberg.types.Types;
+import org.example.consent.model.ComplexConsentRule;
 import org.example.ingestion.model.TelemetryMessage;
 import org.example.processing.strategy.IcebergPhysicalPartitionStrategy;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,6 +62,9 @@ public class IcebergStrategyManualTest {
     @Autowired
     private com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     // Same schema as integration test
     private static final Schema SCHEMA = new Schema(
             Types.NestedField.required(1, "trace_id", Types.StringType.get()),
@@ -87,34 +84,30 @@ public class IcebergStrategyManualTest {
 
     @Test
     void testInitialPartitioning() throws Exception {
-        System.out.println("Running Manual: testInitialPartitioning");
+        System.out.println("Running Manual: testInitialPartitioning with Resources");
 
-        String athleteId = "manual-athlete-" + UUID.randomUUID();
+        // 1. Load Resources
+        Resource ruleResource = resourceLoader.getResource("classpath:consent_rule.json");
+        Resource dataResource = resourceLoader.getResource("classpath:raw_data.json");
+
+        List<ComplexConsentRule> rules = objectMapper.readValue(ruleResource.getInputStream(),
+                new TypeReference<List<ComplexConsentRule>>() {
+                });
+        ComplexConsentRule rule = rules.get(0); // Use first rule
+        String athleteId = rule.getUserId();
+
+        List<Map<String, Object>> dataList = objectMapper.readValue(dataResource.getInputStream(),
+                new TypeReference<List<Map<String, Object>>>() {
+                });
+        Map<String, Object> payload = dataList.get(0); // Use first record
+
         String traceId = UUID.randomUUID().toString();
 
-        // 1. Setup Consent Rule in Redis
-        org.example.consent.model.ComplexConsentRule rule = new org.example.consent.model.ComplexConsentRule();
-        rule.setUserId(athleteId);
-        rule.setStatus("ACTIVE");
-        org.example.consent.model.ComplexConsentRule.Dimensions dims = new org.example.consent.model.ComplexConsentRule.Dimensions();
-        org.example.consent.model.ComplexConsentRule.DimensionDetail purposeDim = new org.example.consent.model.ComplexConsentRule.DimensionDetail();
-        purposeDim.setType("specific");
-        purposeDim.setValues(java.util.List.of(
-                new org.example.consent.model.ComplexConsentRule.ValueDetail("1", "analytics", "Analytics")));
-        dims.setPurpose(purposeDim);
-        rule.setDimensions(dims);
-
+        // 2. Setup Consent Rule in Redis
         redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
         System.out.println("✅ Rule set in Redis for: " + athleteId);
 
-        // 2. Setup Data in MinIO (Silver)
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("event_id", "evt-1");
-        payload.put("activity_type", "run");
-        payload.put("heart_rate", 150);
-        payload.put("latitude", 40.7128);
-        payload.put("longitude", -74.0060);
-
+        // 3. Setup Data in MinIO (Silver)
         String silverBucket = "silver";
         if (!minioClient.bucketExists(io.minio.BucketExistsArgs.builder().bucket(silverBucket).build())) {
             minioClient.makeBucket(io.minio.MakeBucketArgs.builder().bucket(silverBucket).build());
@@ -130,22 +123,23 @@ public class IcebergStrategyManualTest {
                 .build());
         System.out.println("✅ Data uploaded to MinIO: " + minioPath);
 
-        // 3. Process
+        // 4. Process
         TelemetryMessage message = org.example.ingestion.model.TelemetryMessage.builder()
                 .athleteId(athleteId)
                 .traceId(traceId)
-                .timestamp(java.time.Instant.parse("2025-01-01T10:00:00Z").toEpochMilli())
+                .timestamp(java.time.Instant.now().toEpochMilli())
                 .payload(payload)
                 .minioPath(minioPath)
                 .build();
 
         strategy.processAndFanOut(message);
 
-        // 4. Verify Data Exists via API (or check logs/manual verify)
-        boolean exists = strategy.verifyDataExists(athleteId, "analytics");
+        // 5. Verify Data Exists via API
+        // First rule has purpose: "research"
+        boolean exists = strategy.verifyDataExists(athleteId, "research");
         assertThat(exists).isTrue();
 
-        System.out.println("✅ Initial Partitioning Verified Locally");
+        System.out.println("✅ Initial Partitioning Verified Locally with Resources");
     }
 
     @Test

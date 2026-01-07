@@ -2,8 +2,10 @@ package org.example.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.minio.*;
-import io.minio.messages.Item;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import org.awaitility.Awaitility;
 import org.example.config.KafkaConfig;
 import org.example.consent.model.ComplexConsentRule;
 import org.example.consent.model.ConsentChangedEvent;
@@ -14,7 +16,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.awaitility.Awaitility;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 

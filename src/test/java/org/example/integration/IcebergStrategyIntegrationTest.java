@@ -1,14 +1,15 @@
 package org.example.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import org.apache.iceberg.CatalogUtil;
+import org.apache.iceberg.FileScanTask;
 import org.apache.iceberg.Schema;
 import org.apache.iceberg.Table;
-import org.apache.iceberg.FileScanTask;
 import org.apache.iceberg.catalog.Catalog;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.iceberg.data.GenericRecord;
@@ -16,7 +17,6 @@ import org.apache.iceberg.data.IcebergGenerics;
 import org.apache.iceberg.data.Record;
 import org.apache.iceberg.data.parquet.GenericParquetWriter;
 import org.apache.iceberg.io.CloseableIterable;
-import org.apache.iceberg.io.DataWriter;
 import org.apache.iceberg.io.OutputFile;
 import org.apache.iceberg.parquet.Parquet;
 import org.example.consent.model.ComplexConsentRule;
@@ -26,6 +26,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -109,38 +111,31 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
         @Autowired
         private StringRedisTemplate redisTemplate;
 
+        @Autowired
+        private ResourceLoader resourceLoader;
+
         @Test
         void testFanOutCreatesCorrectPartitions() throws Exception {
-                // 1. Setup Data
-                String athleteId = "athlete1";
+                // 1. Setup Data using Resources
+                Resource ruleResource = resourceLoader.getResource("classpath:consent_rule.json");
+                Resource dataResource = resourceLoader.getResource("classpath:raw_data.json");
+
+                List<ComplexConsentRule> rules = objectMapper.readValue(ruleResource.getInputStream(),
+                                new TypeReference<List<ComplexConsentRule>>() {
+                                });
+                ComplexConsentRule rule = rules.get(0); // Use first rule
+                String athleteId = rule.getUserId();
+
+                List<Map<String, Object>> dataList = objectMapper.readValue(dataResource.getInputStream(),
+                                new TypeReference<List<Map<String, Object>>>() {
+                                });
+                Map<String, Object> payload = dataList.get(0); // Use first record
+
                 String traceId = UUID.randomUUID().toString();
                 long timestamp = Instant.parse("2026-01-05T10:00:00Z").toEpochMilli();
 
-                // Consent Rule: Research(Any), Marketing(Any)
-                ComplexConsentRule rule = new ComplexConsentRule();
-                rule.setUserId(athleteId);
-                rule.setStatus("ACTIVE");
-                ComplexConsentRule.Dimensions dims = new ComplexConsentRule.Dimensions();
-                ComplexConsentRule.DimensionDetail purposeDim = new ComplexConsentRule.DimensionDetail();
-                purposeDim.setType("specific");
-                purposeDim.setValues(List.of(
-                                new ComplexConsentRule.ValueDetail("1", "research", "Research"),
-                                new ComplexConsentRule.ValueDetail("2", "marketing", "Marketing")));
-                dims.setPurpose(purposeDim);
-
-                // Allowed Event
-                ComplexConsentRule.DimensionDetail eventDim = new ComplexConsentRule.DimensionDetail();
-                eventDim.setType("any");
-                dims.setEvents(eventDim);
-
-                rule.setDimensions(dims);
+                // Consent Rule is loaded from file
                 redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
-
-                // Enriched Data in Silver
-                Map<String, Object> payload = new HashMap<>();
-                payload.put("hr", 140);
-                payload.put("activity_type", "running");
-                payload.put("event_id", "training_session_1");
 
                 String silverPath = "silver/data.json";
                 if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket("silver").build())) {
@@ -174,20 +169,87 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                                 new org.apache.hadoop.conf.Configuration());
                 Table table = catalog.loadTable(TableIdentifier.of("gold", "telemetry"));
 
-                // Verify Research
+                // Verify Research (First rule value is 'research')
                 CloseableIterable<Record> researchRecords = IcebergGenerics.read(table)
                                 .where(org.apache.iceberg.expressions.Expressions.equal("purpose", "research"))
                                 .build();
                 assertThat(researchRecords).hasSize(1);
                 Record r1 = researchRecords.iterator().next();
-                assertThat(r1.getField("activity_type")).isEqualTo("running");
+                // Check a field from raw_data.json, e.g. "sensor_type" or "field"
+                // The first record in raw_data.json is:
+                // { "athlete_id": "...", "event_id": "summer_cup_2025", "sensor_type": "REST",
+                // "field": "VO2_MAX", "value": 52.5 }
+                // The integration test schema might be different or generic, let's see current
+                // schema usage.
+                // It seems schema is dynamic? No, integration test uses the strategy which uses
+                // a default spec?
+                // Wait, strategy uses configured spec.
+
+                // Assertions based on "raw_data.json" record 0 content:
+                // athlete_id matches rule's userId
+                assertThat(r1.getField("athlete_id")).isEqualTo(athleteId);
+                // activity_type is not in record 0 of raw_data.json?
+                // raw_data.json has: athlete_id, event_id, sensor_type, field, value
+                // BUT IcebergPhysicalPartitionStrategy relies on 'activity_type' for some
+                // partitioning/metadata?
+                // Let's check logic: strategy uses `enrichedData.getOrDefault("activity_type",
+                // "unknown")`.
+                // The raw_data.json sample provided previously does NOT have 'activity_type'.
+                // So it will default to 'unknown'.
+
+                // However, the previous manual test used 'activity_type' in payload.
+                // If raw_data.json lacks 'activity_type', the partition 'activity_type' will be
+                // 'unknown'.
+                // Let's check expectation. Previous verification verified "activity_type"
+                // matches "running".
+                // Use 'unknown' or update expected value.
+                // Also, raw_data.json: { "field": "VO2_MAX" ... }
+                // Let's assert on something present.
+
+                // Actually, let's be safe. The previous manual test payload was constructing a
+                // Map with "activity_type".
+                // The raw_data.json seems to come from a different context or I should check if
+                // I should modify it?
+                // No, user asked to use raw_data.json. I will follow that.
+                // I will assert what is actually in the file.
+
+                // Strategy puts `enrichedData` into the 'data' field? No, strategy writes
+                // record with schema fields.
+                // Strategy's writeRecord method:
+                // record.setField("trace_id", message.getTraceId());
+                // record.setField("athlete_id", message.getAthleteId());
+                // record.setField("event_id", eventId);
+                // ...
+                // record.setField("activity_type", activity);
+                // (extracted from enrichedData.getOrDefault("activity_type", "unknown"))
+
+                // So for raw_data.json record 0, activity_type will be "unknown".
+                assertThat(r1.getField("activity_type")).isEqualTo("unknown");
                 assertThat(r1.getField("athlete_id")).isEqualTo(athleteId);
 
-                // Verify Marketing
-                CloseableIterable<Record> marketingRecords = IcebergGenerics.read(table)
-                                .where(org.apache.iceberg.expressions.Expressions.equal("purpose", "marketing"))
+                // Verify Marketing (First rule also has 'marketing' if checking
+                // consent_rule.json?)
+                // consent_rule.json first rule values:
+                // "values": [ { "id": "1", "value": "research", ... }, ..., { "id": "2",
+                // "value": "sportsAndPerformance", ... } ... ]
+                // It does NOT have "marketing". It has "research", "governmentResearch",
+                // "sportsAndPerformance", etc.
+                // So checking for "marketing" will fail if checking first rule of
+                // consent_rule.json.
+                // I should remove this assertion or check for a value that IS there, e.g.
+                // "sportsAndPerformance" (id: 2).
+
+                // Actually, let's just checking 'research' is enough for FanOut verification?
+                // Or check 'sportsAndPerformance' to verify multi-purpose fan-out if the rule
+                // has it.
+
+                // Rule 0 has many values. It should fan out to all of them.
+                // Let's verify 'sportsAndPerformance' is present.
+                CloseableIterable<Record> sportsRecords = IcebergGenerics.read(table)
+                                .where(org.apache.iceberg.expressions.Expressions.equal("purpose",
+                                                "sportsAndPerformance"))
                                 .build();
-                assertThat(marketingRecords).hasSize(1);
+                assertThat(sportsRecords).hasSize(1);
         }
 
         @Test
