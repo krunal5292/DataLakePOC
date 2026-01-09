@@ -66,7 +66,9 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
     private Catalog catalog;
     private TableIdentifier tableIdentifier;
     private static final String NAMESPACE = "gold";
-    private static final String TABLE_NAME = "telemetry";
+
+    @Value("${iceberg.table.name:telemetry}")
+    private String tableName;
 
     // Schema Definition
     private static final Schema SCHEMA = new Schema(
@@ -129,7 +131,7 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
         this.catalog = restCatalog;
 
         // 2. Create Table if not exists
-        this.tableIdentifier = TableIdentifier.of(Namespace.of(NAMESPACE), TABLE_NAME);
+        this.tableIdentifier = TableIdentifier.of(Namespace.of(NAMESPACE), tableName);
 
         // Ensure namespace exists
         try {
@@ -309,8 +311,7 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
         // In a real high-volume scenario, we might use an index or stricter
         // partitioning.
         CloseableIterable<FileScanTask> tasks = table.newScan()
-                .filter(Expressions.and(Expressions.equal("athlete_id", athleteId),
-                        Expressions.equal("purpose", purpose)))
+                .filter(Expressions.equal("purpose", purpose))
                 .planFiles();
 
         for (FileScanTask task : tasks) {
@@ -458,6 +459,7 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
         } catch (Exception e) {
             return false;
         }
+
     }
 
     @Override

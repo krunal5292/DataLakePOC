@@ -22,16 +22,16 @@ public class BronzeConsumer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @KafkaListener(topics = KafkaConfig.TELEMETRY_INGEST, groupId = "bronze-group")
+    @KafkaListener(topics = KafkaConfig.TELEMETRY_INGEST, groupId = "${spring.kafka.consumer.group-id.bronze:bronze-group}")
     public void consume(TelemetryMessage message) {
         log.info("Consuming from Ingest: {}", message.getTraceId());
         try {
             String path = ingestionService.saveToBronze(message);
-            
+
             // Update message with path and publish to next topic
             message.setMinioPath(path);
             kafkaTemplate.send(KafkaConfig.TELEMETRY_BRONZE_SAVED, message.getAthleteId(), message);
-            
+
             log.info("Saved to Bronze and notified: {}", path);
         } catch (Exception e) {
             log.error("Error in BronzeConsumer", e);

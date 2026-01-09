@@ -19,7 +19,7 @@ public class GoldConsentProcessor {
         this.goldService = goldService;
     }
 
-    @KafkaListener(topics = KafkaConfig.TELEMETRY_SILVER_SAVED, groupId = "gold-group")
+    @KafkaListener(topics = KafkaConfig.TELEMETRY_SILVER_SAVED, groupId = "${spring.kafka.consumer.group-id.gold:gold-group}")
     public void consume(TelemetryMessage message) {
         log.info("Fanning out to Gold based on Consent: {}", message.getTraceId());
         try {

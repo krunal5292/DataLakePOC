@@ -13,22 +13,26 @@ import org.apache.iceberg.io.CloseableIterable;
 import org.apache.iceberg.io.OutputFile;
 import org.apache.iceberg.parquet.Parquet;
 import org.apache.iceberg.types.Types;
+import org.awaitility.Awaitility;
 import org.example.consent.model.ComplexConsentRule;
-import org.example.ingestion.model.TelemetryMessage;
 import org.example.processing.strategy.IcebergPhysicalPartitionStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,13 +47,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  * -Dspring.profiles.active=manual
  */
 @Profile("manual")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("manual")
 @org.springframework.test.context.TestPropertySource(properties = "consent.enforcement.strategy=iceberg")
 public class IcebergStrategyManualTest {
 
     @Autowired
     private IcebergPhysicalPartitionStrategy strategy;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private MinioClient minioClient;
@@ -107,39 +114,70 @@ public class IcebergStrategyManualTest {
         redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
         System.out.println("✅ Rule set in Redis for: " + athleteId);
 
-        // 3. Setup Data in MinIO (Silver)
-        String silverBucket = "silver";
-        if (!minioClient.bucketExists(io.minio.BucketExistsArgs.builder().bucket(silverBucket).build())) {
-            minioClient.makeBucket(io.minio.MakeBucketArgs.builder().bucket(silverBucket).build());
-        }
+        // 3. Ingest Data via API (E2E)
+        // Add athlete_id to payload as required by controller
+        payload.put("athlete_id", athleteId);
 
-        String minioPath = "silver/manual-" + traceId + ".json";
-        byte[] dataBytes = objectMapper.writeValueAsBytes(payload);
-        minioClient.putObject(io.minio.PutObjectArgs.builder()
-                .bucket(silverBucket)
-                .object(minioPath)
-                .stream(new java.io.ByteArrayInputStream(dataBytes), dataBytes.length, -1)
-                .contentType("application/json")
-                .build());
-        System.out.println("✅ Data uploaded to MinIO: " + minioPath);
+        System.out.println("⏳ Sending data to /api/ingest...");
+        ResponseEntity<Map> response = restTemplate.postForEntity("/api/ingest", payload, Map.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+        System.out.println("✅ API accepted data. Waiting for async processing...");
 
-        // 4. Process
-        TelemetryMessage message = org.example.ingestion.model.TelemetryMessage.builder()
-                .athleteId(athleteId)
-                .traceId(traceId)
-                .timestamp(java.time.Instant.now().toEpochMilli())
-                .payload(payload)
-                .minioPath(minioPath)
-                .build();
+        // 4. Wait for Iceberg Data
+        Awaitility.await().atMost(60, TimeUnit.SECONDS).pollInterval(2, TimeUnit.SECONDS).until(() -> {
+            boolean exists = strategy.verifyDataExists(athleteId, "research");
+            if (exists)
+                System.out.println("   -> Data found in Iceberg!");
+            return exists;
+        });
 
-        strategy.processAndFanOut(message);
-
-        // 5. Verify Data Exists via API
-        // First rule has purpose: "research"
+        // 5. Verify Data Exists
         boolean exists = strategy.verifyDataExists(athleteId, "research");
         assertThat(exists).isTrue();
 
-        System.out.println("✅ Initial Partitioning Verified Locally with Resources");
+        System.out.println("✅ Initial Partitioning Verified Locally via API");
+    }
+
+    @Test
+    void testRevocationRemovesData() throws Exception {
+        System.out.println("Running Manual: testRevocationRemovesData");
+
+        String athleteId = "athlete_revoke_manual";
+
+        // 1. Consent to Research
+        ComplexConsentRule rule = new ComplexConsentRule();
+        rule.setUserId(athleteId);
+        rule.setStatus("ACTIVE");
+        ComplexConsentRule.Dimensions dims = new ComplexConsentRule.Dimensions();
+        dims.setPurpose(new ComplexConsentRule.DimensionDetail("specific",
+                List.of(new ComplexConsentRule.ValueDetail("1", "research", "Research")), null));
+        dims.setEvents(new ComplexConsentRule.DimensionDetail("any", null, null));
+        rule.setDimensions(dims);
+        redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
+        System.out.println("✅ Rule set in Redis for: " + athleteId);
+
+        // 2. Ingest Data via API
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("athlete_id", athleteId);
+        payload.put("activity_type", "running");
+        payload.put("heart_rate", 120);
+
+        System.out.println("⏳ Sending data to /api/ingest...");
+        ResponseEntity<Map> response = restTemplate.postForEntity("/api/ingest", payload, Map.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+
+        // 3. Wait for Iceberg Data
+        Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> strategy.verifyDataExists(athleteId, "research"));
+        assertThat(strategy.verifyDataExists(athleteId, "research")).isTrue();
+        System.out.println("✅ Data found in Iceberg. Proceeding to revoke.");
+
+        // 4. Revoke
+        strategy.handleRevocation(athleteId, "research");
+        System.out.println("✅ Revocation Triggered.");
+
+        // 5. Verify Gone
+        assertThat(strategy.verifyDataExists(athleteId, "research")).isFalse();
+        System.out.println("✅ Revocation Verified: Data is gone.");
     }
 
     @Test
