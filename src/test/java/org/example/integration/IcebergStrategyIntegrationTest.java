@@ -2,49 +2,72 @@ package org.example.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import org.apache.iceberg.CatalogUtil;
-import org.apache.iceberg.FileScanTask;
-import org.apache.iceberg.Schema;
-import org.apache.iceberg.Table;
+import org.apache.iceberg.*;
 import org.apache.iceberg.catalog.Catalog;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.iceberg.data.GenericRecord;
 import org.apache.iceberg.data.IcebergGenerics;
 import org.apache.iceberg.data.Record;
 import org.apache.iceberg.data.parquet.GenericParquetWriter;
+import org.apache.iceberg.expressions.Expressions;
 import org.apache.iceberg.io.CloseableIterable;
 import org.apache.iceberg.io.OutputFile;
 import org.apache.iceberg.parquet.Parquet;
 import org.example.consent.model.ComplexConsentRule;
-import org.example.ingestion.model.TelemetryMessage;
 import org.example.processing.strategy.IcebergPhysicalPartitionStrategy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.containers.Network;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.ByteArrayInputStream;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
-@SpringBootTest(properties = "consent.enforcement.strategy=iceberg")
-public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
+                "consent.enforcement.strategy=iceberg"
+})
+public class IcebergStrategyIntegrationTest {
+
+        private static final Network NETWORK = Network.newNetwork();
+
+        private static final KafkaContainer KAFKA = new KafkaContainer(
+                        DockerImageName.parse("confluentinc/cp-kafka:7.5.0"))
+                        .withNetwork(NETWORK)
+                        .withNetworkAliases("kafka");
+
+        private static final GenericContainer<?> REDIS = new GenericContainer<>(DockerImageName.parse("redis:alpine"))
+                        .withExposedPorts(6379)
+                        .withNetwork(NETWORK)
+                        .withNetworkAliases("redis");
+
+        private static final GenericContainer<?> MINIO = new GenericContainer<>(DockerImageName.parse("minio/minio"))
+                        .withExposedPorts(9000, 9001)
+                        .withEnv("MINIO_ROOT_USER", "admin")
+                        .withEnv("MINIO_ROOT_PASSWORD", "password")
+                        .withCommand("server /data --console-address :9001")
+                        .withNetwork(NETWORK)
+                        .withNetworkAliases("minio")
+                        .waitingFor(Wait.forHttp("/minio/health/live").forPort(9000));
 
         // Postgres for Iceberg Catalog
         private static final GenericContainer<?> POSTGRES = new GenericContainer<>(
@@ -75,26 +98,35 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                         .dependsOn(POSTGRES); // MinIO is already started in Base
 
         @BeforeAll
-        static void startIceberg() {
+        static void startContainers() {
+                KAFKA.start();
+                REDIS.start();
+                MINIO.start();
                 POSTGRES.start();
                 ICEBERG_REST.start();
         }
 
-        // No @AfterAll needed as Testcontainers handles shutdown, or Base handles
-        // shared ones.
-        // Specifying stop explicitly might be safer if we don't want them leaking, but
-        // usually fine.
-
         @DynamicPropertySource
-        static void icebergProperties(DynamicPropertyRegistry registry) {
-                // Base properties (Redis, MinIO, Kafka) are loaded by BaseTestcontainersTest
+        static void dynamicProperties(DynamicPropertyRegistry registry) {
+                // Kafka
+                registry.add("spring.kafka.bootstrap-servers", KAFKA::getBootstrapServers);
 
+                // Redis
+                registry.add("spring.data.redis.host", REDIS::getHost);
+                registry.add("spring.data.redis.port", REDIS::getFirstMappedPort);
+
+                // MinIO
+                registry.add("minio.url", () -> "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
+                registry.add("minio.access-key", () -> "admin");
+                registry.add("minio.secret-key", () -> "password");
+
+                // Iceberg
                 registry.add("iceberg.catalog.uri",
                                 () -> "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
 
                 // We must point the App to the MinIO container's external port
                 registry.add("iceberg.s3.endpoint",
-                                () -> "http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
+                                () -> "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
                 registry.add("iceberg.s3.access-key", () -> "admin");
                 registry.add("iceberg.s3.secret-key", () -> "password");
         }
@@ -114,8 +146,11 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
         @Autowired
         private ResourceLoader resourceLoader;
 
+        @Autowired
+        private TestRestTemplate restTemplate;
+
         @Test
-        void testFanOutCreatesCorrectPartitions() throws Exception {
+        void testFullIcebergFanOutFlow() throws Exception {
                 // 1. Setup Data using Resources
                 Resource ruleResource = resourceLoader.getResource("classpath:consent_rule.json");
                 Resource dataResource = resourceLoader.getResource("classpath:raw_data.json");
@@ -123,175 +158,137 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                 List<ComplexConsentRule> rules = objectMapper.readValue(ruleResource.getInputStream(),
                                 new TypeReference<List<ComplexConsentRule>>() {
                                 });
-                ComplexConsentRule rule = rules.get(0); // Use first rule
+                ComplexConsentRule rule = rules.get(0); // Use first rule user
                 String athleteId = rule.getUserId();
 
+                // Extract expected purposes for verification
+                List<String> consentedPurposes = rule.getDimensions().getPurpose().getValues().stream()
+                                .map(ComplexConsentRule.ValueDetail::getValue)
+                                .collect(Collectors.toList());
+
+                // Load Rules to Redis
+                redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
+
+                // Load Raw Data
                 List<Map<String, Object>> dataList = objectMapper.readValue(dataResource.getInputStream(),
                                 new TypeReference<List<Map<String, Object>>>() {
                                 });
-                Map<String, Object> payload = dataList.get(0); // Use first record
 
-                String traceId = UUID.randomUUID().toString();
-                long timestamp = Instant.parse("2026-01-05T10:00:00Z").toEpochMilli();
+                System.out.println("📤 Ingesting " + dataList.size() + " records for athlete: " + athleteId);
 
-                // Consent Rule is loaded from file
-                redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
-
-                String silverPath = "silver/data.json";
-                if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket("silver").build())) {
-                        minioClient.makeBucket(MakeBucketArgs.builder().bucket("silver").build());
+                // 2. Ingest Data via REST API
+                for (Map<String, Object> payload : dataList) {
+                        // Ensure athlete_id matches the rule
+                        payload.put("athlete_id", athleteId);
+                        restTemplate.postForEntity("/api/ingest", payload, Map.class);
                 }
 
-                byte[] dataBytes = objectMapper.writeValueAsBytes(payload);
-                minioClient.putObject(PutObjectArgs.builder()
-                                .bucket("silver")
-                                .object(silverPath)
-                                .stream(new ByteArrayInputStream(dataBytes), dataBytes.length, -1)
-                                .build());
+                // 3. Await Processing (Gold Layer)
+                await().atMost(60, TimeUnit.SECONDS).pollInterval(2, TimeUnit.SECONDS).untilAsserted(() -> {
+                        Table table;
+                        try {
+                                table = loadIcebergTable();
+                        } catch (Exception e) {
+                                assertThat(false).as("Iceberg table not yet created").isTrue();
+                                return;
+                        }
 
-                TelemetryMessage message = new TelemetryMessage(traceId, athleteId, timestamp, payload, silverPath);
+                        // Verify ALL consented purposes have data
+                        for (String purpose : consentedPurposes) {
+                                CloseableIterable<Record> results = IcebergGenerics.read(table)
+                                                .where(Expressions.and(
+                                                                Expressions.equal("purpose", purpose),
+                                                                Expressions.equal("athlete_id", athleteId)))
+                                                .build();
+                                assertThat(results).as("Data missing for purpose: " + purpose).isNotEmpty();
+                        }
+                });
 
-                // 2. Execute Fan-Out
-                strategy.processAndFanOut(message);
+                // 4. Verify Iceberg Structure & Data
+                System.out.println("🔍 Verifying Iceberg Table Structure and Data Content...");
+                Table table = loadIcebergTable();
 
-                // 3. Verify Iceberg Data
-                Map<String, String> properties = new HashMap<>();
-                properties.put("uri", "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
-                properties.put("warehouse", "s3://gold-warehouse/");
-                properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-                // External access to MinIO
-                properties.put("s3.endpoint", "http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
-                properties.put("s3.access-key-id", "admin");
-                properties.put("s3.secret-access-key", "password");
-                properties.put("s3.path-style-access", "true");
+                // 4a. Verify Partition Spec
+                PartitionSpec spec = table.spec();
+                System.out.println("Current Spec: " + spec);
 
-                Catalog catalog = CatalogUtil.loadCatalog("org.apache.iceberg.rest.RESTCatalog", "demo", properties,
-                                new org.apache.hadoop.conf.Configuration());
-                Table table = catalog.loadTable(TableIdentifier.of("gold", "telemetry"));
+                assertThat(spec.fields()).hasSize(4);
+                assertThat(spec.fields().get(0).name()).isEqualTo("purpose");
+                assertThat(spec.fields().get(1).name()).isEqualTo("activity_type");
+                assertThat(spec.fields().get(2).name()).isEqualTo("event_id");
+                // Verify day transform on timestamp
+                assertThat(spec.fields().get(3).transform().toString()).contains("day");
 
-                // Verify Research (First rule value is 'research')
-                CloseableIterable<Record> researchRecords = IcebergGenerics.read(table)
-                                .where(org.apache.iceberg.expressions.Expressions.equal("purpose", "research"))
+                // 4b. Verify Data for Consented Purposes
+                for (String purpose : consentedPurposes) {
+                        System.out.println("Checking purpose: " + purpose);
+                        CloseableIterable<Record> results = IcebergGenerics.read(table)
+                                        .where(Expressions.and(
+                                                        Expressions.equal("purpose", purpose),
+                                                        Expressions.equal("athlete_id", athleteId)))
+                                        .build();
+
+                        // We expect data to be fanned out to ALL consented purposes
+                        assertThat(results).isNotEmpty();
+
+                        // Verify content matches partition
+                        for (Record r : results) {
+                                assertThat(r.getField("purpose")).isEqualTo(purpose);
+                        }
+                }
+
+                // 4c. Verify Negative Case (Unconsented Purpose)
+                String unconsentedPurpose = "marketing";
+                System.out.println("Checking negative case: " + unconsentedPurpose);
+                CloseableIterable<Record> negativeResults = IcebergGenerics.read(table)
+                                .where(Expressions.equal("purpose", unconsentedPurpose))
                                 .build();
-                assertThat(researchRecords).hasSize(1);
-                Record r1 = researchRecords.iterator().next();
-                // Check a field from raw_data.json, e.g. "sensor_type" or "field"
-                // The first record in raw_data.json is:
-                // { "athlete_id": "...", "event_id": "summer_cup_2025", "sensor_type": "REST",
-                // "field": "VO2_MAX", "value": 52.5 }
-                // The integration test schema might be different or generic, let's see current
-                // schema usage.
-                // It seems schema is dynamic? No, integration test uses the strategy which uses
-                // a default spec?
-                // Wait, strategy uses configured spec.
+                assertThat(negativeResults).isEmpty();
 
-                // Assertions based on "raw_data.json" record 0 content:
-                // athlete_id matches rule's userId
-                assertThat(r1.getField("athlete_id")).isEqualTo(athleteId);
-                // activity_type is not in record 0 of raw_data.json?
-                // raw_data.json has: athlete_id, event_id, sensor_type, field, value
-                // BUT IcebergPhysicalPartitionStrategy relies on 'activity_type' for some
-                // partitioning/metadata?
-                // Let's check logic: strategy uses `enrichedData.getOrDefault("activity_type",
-                // "unknown")`.
-                // The raw_data.json sample provided previously does NOT have 'activity_type'.
-                // So it will default to 'unknown'.
-
-                // However, the previous manual test used 'activity_type' in payload.
-                // If raw_data.json lacks 'activity_type', the partition 'activity_type' will be
-                // 'unknown'.
-                // Let's check expectation. Previous verification verified "activity_type"
-                // matches "running".
-                // Use 'unknown' or update expected value.
-                // Also, raw_data.json: { "field": "VO2_MAX" ... }
-                // Let's assert on something present.
-
-                // Actually, let's be safe. The previous manual test payload was constructing a
-                // Map with "activity_type".
-                // The raw_data.json seems to come from a different context or I should check if
-                // I should modify it?
-                // No, user asked to use raw_data.json. I will follow that.
-                // I will assert what is actually in the file.
-
-                // Strategy puts `enrichedData` into the 'data' field? No, strategy writes
-                // record with schema fields.
-                // Strategy's writeRecord method:
-                // record.setField("trace_id", message.getTraceId());
-                // record.setField("athlete_id", message.getAthleteId());
-                // record.setField("event_id", eventId);
-                // ...
-                // record.setField("activity_type", activity);
-                // (extracted from enrichedData.getOrDefault("activity_type", "unknown"))
-
-                // So for raw_data.json record 0, activity_type will be "unknown".
-                assertThat(r1.getField("activity_type")).isEqualTo("unknown");
-                assertThat(r1.getField("athlete_id")).isEqualTo(athleteId);
-
-                // Verify Marketing (First rule also has 'marketing' if checking
-                // consent_rule.json?)
-                // consent_rule.json first rule values:
-                // "values": [ { "id": "1", "value": "research", ... }, ..., { "id": "2",
-                // "value": "sportsAndPerformance", ... } ... ]
-                // It does NOT have "marketing". It has "research", "governmentResearch",
-                // "sportsAndPerformance", etc.
-                // So checking for "marketing" will fail if checking first rule of
-                // consent_rule.json.
-                // I should remove this assertion or check for a value that IS there, e.g.
-                // "sportsAndPerformance" (id: 2).
-
-                // Actually, let's just checking 'research' is enough for FanOut verification?
-                // Or check 'sportsAndPerformance' to verify multi-purpose fan-out if the rule
-                // has it.
-
-                // Rule 0 has many values. It should fan out to all of them.
-                // Let's verify 'sportsAndPerformance' is present.
-                CloseableIterable<Record> sportsRecords = IcebergGenerics.read(table)
-                                .where(org.apache.iceberg.expressions.Expressions.equal("purpose",
-                                                "sportsAndPerformance"))
-                                .build();
-                assertThat(sportsRecords).hasSize(1);
+                System.out.println("✅ All Iceberg Verifications Passed!");
         }
 
         @Test
         void testRevocationRemovesData() throws Exception {
-                String athleteId = "athlete_revoke";
-                String traceId = UUID.randomUUID().toString();
-                long timestamp = Instant.now().toEpochMilli();
+                String athleteId = "athlete_revoke_" + UUID.randomUUID().toString().substring(0, 8);
 
-                // Consent to Research
-                ComplexConsentRule rule = new ComplexConsentRule();
+                // 1. Consent from JSON (Same as working test)
+                List<ComplexConsentRule> rules = objectMapper.readValue(
+                                getClass().getClassLoader().getResourceAsStream("consent_rule.json"),
+                                new TypeReference<List<ComplexConsentRule>>() {
+                                });
+                ComplexConsentRule rule = rules.get(0);
                 rule.setUserId(athleteId);
                 rule.setStatus("ACTIVE");
-                ComplexConsentRule.Dimensions dims = new ComplexConsentRule.Dimensions();
-                dims.setPurpose(new ComplexConsentRule.DimensionDetail("specific",
-                                List.of(new ComplexConsentRule.ValueDetail("1", "research", "Research")), null));
-                dims.setEvents(new ComplexConsentRule.DimensionDetail("any", null, null));
-                rule.setDimensions(dims);
                 redisTemplate.opsForValue().set("consent:rule:" + athleteId, objectMapper.writeValueAsString(rule));
 
-                // Enriched Data
-                Map<String, Object> payload = new HashMap<>();
-                payload.put("activity_type", "cycling");
-                String silverPath = "silver/revoke_data.json";
+                // 2. Ingest Data from JSON (Same as working test)
+                List<Map<String, Object>> dataRows = objectMapper.readValue(
+                                getClass().getClassLoader().getResourceAsStream("raw_data.json"),
+                                new TypeReference<List<Map<String, Object>>>() {
+                                });
+                Map<String, Object> payload = dataRows.get(0);
+                payload.put("athlete_id", athleteId);
+                payload.put("timestamp", Instant.now().toString());
 
-                if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket("silver").build())) {
-                        minioClient.makeBucket(MakeBucketArgs.builder().bucket("silver").build());
-                }
+                System.out.println("TEST_REVOKE_ID: " + athleteId);
+                org.springframework.http.ResponseEntity<Map> response = restTemplate.postForEntity("/api/ingest",
+                                payload, Map.class);
+                assertThat(response.getStatusCode().is2xxSuccessful()).as("Ingestion should accept data").isTrue();
 
-                byte[] dataBytes = objectMapper.writeValueAsBytes(payload);
-                minioClient.putObject(PutObjectArgs.builder().bucket("silver").object(silverPath)
-                                .stream(new ByteArrayInputStream(dataBytes), dataBytes.length, -1).build());
+                // 3. Await Data Presence (Gold Layer) for "research" (present in
+                // consent_rule.json)
+                await().atMost(120, TimeUnit.SECONDS).pollInterval(2, TimeUnit.SECONDS).untilAsserted(() -> {
+                        boolean exists = strategy.verifyDataExists(athleteId, "research");
+                        assertThat(exists).as("Data should exist for 'research' purpose").isTrue();
+                });
 
-                TelemetryMessage message = new TelemetryMessage(traceId, athleteId, timestamp, payload, silverPath);
-                strategy.processAndFanOut(message);
-
-                assertThat(strategy.verifyDataExists(athleteId, "research")).isTrue();
-
-                // 2. Revoke
+                // 4. Revoke
                 strategy.handleRevocation(athleteId, "research");
 
-                // 3. Verify Gone
-                assertThat(strategy.verifyDataExists(athleteId, "research")).isFalse();
+                // 5. Verify Gone
+                assertThat(strategy.verifyDataExists(athleteId, "research"))
+                                .as("Data should be removed after revocation").isFalse();
         }
 
         @Test
@@ -300,11 +297,10 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                 properties.put("uri", "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
                 properties.put("warehouse", "s3://gold-warehouse/");
                 properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-                properties.put("s3.endpoint", "http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
+                properties.put("s3.endpoint", "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
                 properties.put("s3.access-key-id", "admin");
                 properties.put("s3.secret-access-key", "password");
                 properties.put("s3.path-style-access", "true");
-                // properties.put("client.region", "us-east-1"); // Needed for some clients
 
                 Catalog catalog = CatalogUtil.loadCatalog("org.apache.iceberg.rest.RESTCatalog", "demo", properties,
                                 new org.apache.hadoop.conf.Configuration());
@@ -368,29 +364,41 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
 
         @Test
         void testPartitionEvolution() throws Exception {
-                // 1. Initial State: Validated by previous tests (Schema has identity(purpose),
-                // etc.)
                 Map<String, String> properties = new HashMap<>();
                 properties.put("uri", "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
                 properties.put("warehouse", "s3://gold-warehouse/");
                 properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-                properties.put("s3.endpoint", "http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
+                properties.put("s3.endpoint", "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
                 properties.put("s3.access-key-id", "admin");
                 properties.put("s3.secret-access-key", "password");
                 properties.put("s3.path-style-access", "true");
 
                 Catalog catalog = CatalogUtil.loadCatalog("org.apache.iceberg.rest.RESTCatalog", "demo", properties,
                                 new org.apache.hadoop.conf.Configuration());
-                Table table = catalog.loadTable(TableIdentifier.of("gold", "telemetry"));
+
+                // Create a separate table for evolution to avoid polluting shared table
+                TableIdentifier evolId = TableIdentifier.of("gold", "evolution_test");
+                if (catalog.tableExists(evolId))
+                        catalog.dropTable(evolId);
+
+                // Use same schema as telemetry for realism
+                Schema schema = IcebergPhysicalPartitionStrategy.SCHEMA;
+                PartitionSpec spec = PartitionSpec.builderFor(schema)
+                                .identity("purpose")
+                                .identity("activity_type")
+                                .identity("event_id")
+                                .day("timestamp")
+                                .build();
+
+                catalog.createTable(evolId, schema, spec);
+                Table table = catalog.loadTable(evolId);
 
                 // 2. Evolve Partition Spec: Add 'trace_id' as a partition field
-                // "Dynamic Partition Evolution" allows changing the spec without rewriting old
-                // data.
                 table.updateSpec()
                                 .addField("trace_id")
                                 .commit();
 
-                Table evolvedTable = catalog.loadTable(TableIdentifier.of("gold", "telemetry"));
+                Table evolvedTable = catalog.loadTable(evolId);
                 assertThat(evolvedTable.spec().fields()).hasSize(5); // 4 original + 1 new
                 assertThat(evolvedTable.spec().fields().get(4).name()).isEqualTo("trace_id");
 
@@ -404,8 +412,6 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                 record.setField("activity_type", "testing");
                 record.setField("data", "{}");
 
-                // We must manually construct the partition key for the NEW spec
-                // Spec: purpose, activity_type, event_id, day(timestamp), trace_id
                 org.apache.iceberg.PartitionKey partitionKey = new org.apache.iceberg.PartitionKey(evolvedTable.spec(),
                                 evolvedTable.schema());
                 partitionKey.set(0, "evolution_test"); // purpose
@@ -444,14 +450,11 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
 
         @Test
         void testCustomHierarchy() throws Exception {
-                // Defines a DIFFERENT hierarchical strategy: Region -> Department -> Data
-                // This demonstrates how to test a change in strategy.
-
                 Map<String, String> properties = new HashMap<>();
                 properties.put("uri", "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
                 properties.put("warehouse", "s3://gold-warehouse/");
                 properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-                properties.put("s3.endpoint", "http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
+                properties.put("s3.endpoint", "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
                 properties.put("s3.access-key-id", "admin");
                 properties.put("s3.secret-access-key", "password");
                 properties.put("s3.path-style-access", "true");
@@ -509,25 +512,21 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
 
                 table.newAppend().appendFile(dataFile).commit();
 
-                // 3. Verify Hierarchy
-                // Verify the Spec defines the hierarchy
                 assertThat(table.spec().fields()).hasSize(2); // region, department
                 assertThat(table.spec().fields().get(0).name()).isEqualTo("region");
                 assertThat(table.spec().fields().get(1).name()).isEqualTo("department");
 
-                // Verify the DataFile knows which partition it belongs to
                 assertThat(dataFile.partition().get(0, String.class)).isEqualTo("EMEA");
                 assertThat(dataFile.partition().get(1, String.class)).isEqualTo("Sales");
         }
 
         @Test
         void testReindexing() throws Exception {
-                // 1. Initial State: Partition by 'department'
                 Map<String, String> properties = new HashMap<>();
                 properties.put("uri", "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
                 properties.put("warehouse", "s3://gold-warehouse/");
                 properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-                properties.put("s3.endpoint", "http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
+                properties.put("s3.endpoint", "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
                 properties.put("s3.access-key-id", "admin");
                 properties.put("s3.secret-access-key", "password");
                 properties.put("s3.path-style-access", "true");
@@ -555,7 +554,6 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                 catalog.createTable(id, schema, specA);
                 Table table = catalog.loadTable(id);
 
-                // 2. Write Data (Department=Sales, Region=US) -> Path: department=Sales/...
                 GenericRecord record = GenericRecord.create(schema);
                 record.setField("department", "Sales");
                 record.setField("region", "US");
@@ -581,23 +579,16 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                                 .build();
                 table.newAppend().appendFile(dataFile).commit();
 
-                // 3. Evolve Spec: Add 'region' -> (department, region)
                 table.updateSpec()
                                 .addField("region")
                                 .commit();
 
-                // 4. Trigger Re-index
                 strategy.reindexData("reindex_test");
 
-                // 5. Verify New Files have new structure
                 Table reloaded = catalog.loadTable(id);
                 try (CloseableIterable<FileScanTask> tasks = reloaded.newScan().planFiles()) {
                         boolean foundNewPartition = false;
                         for (FileScanTask task : tasks) {
-                                // The logical partition should now include region
-                                String partitionPath = task.file().partition().toString();
-                                // PartitionData toString() implies dictionary order values?
-                                // Actually better to check raw partition data
                                 String dept = task.file().partition().get(0, String.class);
                                 String reg = task.file().partition().get(1, String.class);
 
@@ -607,5 +598,21 @@ public class IcebergStrategyIntegrationTest extends BaseTestcontainersTest {
                         }
                         assertThat(foundNewPartition).isTrue();
                 }
+        }
+
+        private Table loadIcebergTable() {
+                Map<String, String> properties = new HashMap<>();
+                properties.put("uri", "http://" + ICEBERG_REST.getHost() + ":" + ICEBERG_REST.getFirstMappedPort());
+                properties.put("warehouse", "s3://gold-warehouse/");
+                properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
+                properties.put("s3.endpoint", "http://" + MINIO.getHost() + ":" + MINIO.getFirstMappedPort());
+                properties.put("s3.access-key-id", "admin");
+                properties.put("s3.secret-access-key", "password");
+                properties.put("s3.path-style-access", "true");
+
+                Catalog catalog = CatalogUtil.loadCatalog("org.apache.iceberg.rest.RESTCatalog", "demo", properties,
+                                new org.apache.hadoop.conf.Configuration());
+
+                return catalog.loadTable(TableIdentifier.of("gold", "telemetry"));
         }
 }

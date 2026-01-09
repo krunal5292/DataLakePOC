@@ -69,7 +69,7 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
     private static final String TABLE_NAME = "telemetry";
 
     // Schema Definition
-    private static final Schema SCHEMA = new Schema(
+    public static final Schema SCHEMA = new Schema(
             Types.NestedField.required(1, "trace_id", Types.StringType.get()),
             Types.NestedField.required(2, "athlete_id", Types.StringType.get()),
             Types.NestedField.required(3, "timestamp", Types.TimestampType.withZone()),
