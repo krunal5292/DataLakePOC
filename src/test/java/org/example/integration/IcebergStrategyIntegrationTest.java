@@ -2,7 +2,6 @@ package org.example.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.minio.MinioClient;
 import org.apache.iceberg.*;
 import org.apache.iceberg.catalog.Catalog;
 import org.apache.iceberg.catalog.TableIdentifier;
@@ -50,6 +49,7 @@ public class IcebergStrategyIntegrationTest {
 
         private static final Network NETWORK = Network.newNetwork();
 
+        @SuppressWarnings("deprecation")
         private static final KafkaContainer KAFKA = new KafkaContainer(
                         DockerImageName.parse("confluentinc/cp-kafka:7.5.0"))
                         .withNetwork(NETWORK)
@@ -60,6 +60,7 @@ public class IcebergStrategyIntegrationTest {
                         .withNetwork(NETWORK)
                         .withNetworkAliases("redis");
 
+        @SuppressWarnings("resource")
         private static final GenericContainer<?> MINIO = new GenericContainer<>(DockerImageName.parse("minio/minio"))
                         .withExposedPorts(9000, 9001)
                         .withEnv("MINIO_ROOT_USER", "admin")
@@ -70,6 +71,7 @@ public class IcebergStrategyIntegrationTest {
                         .waitingFor(Wait.forHttp("/minio/health/live").forPort(9000));
 
         // Postgres for Iceberg Catalog
+        @SuppressWarnings("resource")
         private static final GenericContainer<?> POSTGRES = new GenericContainer<>(
                         DockerImageName.parse("postgres:15-alpine"))
                         .withNetwork(NETWORK)
@@ -79,6 +81,7 @@ public class IcebergStrategyIntegrationTest {
                         .withEnv("POSTGRES_PASSWORD", "password")
                         .withEnv("POSTGRES_DB", "iceberg");
 
+        @SuppressWarnings("resource")
         private static final GenericContainer<?> ICEBERG_REST = new GenericContainer<>(
                         DockerImageName.parse("tabulario/iceberg-rest"))
                         .withNetwork(NETWORK)
@@ -135,9 +138,6 @@ public class IcebergStrategyIntegrationTest {
         private IcebergPhysicalPartitionStrategy strategy;
 
         @Autowired
-        private MinioClient minioClient;
-
-        @Autowired
         private ObjectMapper objectMapper;
 
         @Autowired
@@ -180,7 +180,7 @@ public class IcebergStrategyIntegrationTest {
                 for (Map<String, Object> payload : dataList) {
                         // Ensure athlete_id matches the rule
                         payload.put("athlete_id", athleteId);
-                        restTemplate.postForEntity("/api/ingest", payload, Map.class);
+                        restTemplate.postForEntity("/api/ingest", payload, Void.class);
                 }
 
                 // 3. Await Processing (Gold Layer)
