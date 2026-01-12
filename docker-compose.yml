@@ -117,5 +117,24 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
       DYNAMIC_CONFIG_ENABLED: 'true'
 
+  trino:
+    image: trinodb/trino:latest
+    container_name: trino
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./trino/etc:/etc/trino
+    depends_on:
+      - minio
+      - iceberg-rest
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    ports:
+      - "8978:8978"
+    depends_on:
+      - trino
+
 volumes:
   minio_data:

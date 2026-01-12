@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import jakarta.annotation.PostConstruct;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.iceberg.*;
 import org.apache.iceberg.catalog.Catalog;
 import org.apache.iceberg.catalog.Namespace;
@@ -47,23 +46,10 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
     @Value("${minio.bucket.silver}")
     private String silverBucket;
 
-    // Iceberg Config
-    @Value("${iceberg.catalog.uri}")
-    private String catalogUri;
-
     @Value("${iceberg.catalog.warehouse}")
     private String warehouseLocation;
 
-    @Value("${iceberg.s3.endpoint}")
-    private String s3Endpoint;
-
-    @Value("${iceberg.s3.access-key}")
-    private String s3AccessKey;
-
-    @Value("${iceberg.s3.secret-key}")
-    private String s3SecretKey;
-
-    private Catalog catalog;
+    private final Catalog catalog;
     private TableIdentifier tableIdentifier;
     private static final String NAMESPACE = "gold";
     private static final String TABLE_NAME = "telemetry";
@@ -83,10 +69,11 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
     private String partitionSpecString;
 
     public IcebergPhysicalPartitionStrategy(MinioClient minioClient, ObjectMapper objectMapper,
-            StringRedisTemplate redisTemplate) {
+            StringRedisTemplate redisTemplate, Catalog catalog) {
         this.minioClient = minioClient;
         this.objectMapper = objectMapper;
         this.redisTemplate = redisTemplate;
+        this.catalog = catalog;
     }
 
     @PostConstruct
@@ -112,21 +99,7 @@ public class IcebergPhysicalPartitionStrategy implements GoldEnforcementStrategy
             // for S3FileIO)
         }
 
-        // 1. Configure Catalog
-        Map<String, String> properties = new HashMap<>();
-        properties.put("uri", catalogUri);
-        properties.put("warehouse", warehouseLocation);
-        properties.put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-        properties.put("s3.endpoint", s3Endpoint);
-        properties.put("s3.access-key-id", s3AccessKey);
-        properties.put("s3.secret-access-key", s3SecretKey);
-        properties.put("s3.path-style-access", "true");
-        properties.put("client.region", "us-east-1");
-
-        RESTCatalog restCatalog = new RESTCatalog();
-        restCatalog.setConf(new Configuration());
-        restCatalog.initialize("demo", properties);
-        this.catalog = restCatalog;
+        // 1. Catalog is now injected
 
         // 2. Create Table if not exists
         this.tableIdentifier = TableIdentifier.of(Namespace.of(NAMESPACE), TABLE_NAME);
